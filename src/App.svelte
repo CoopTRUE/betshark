@@ -42,7 +42,6 @@
     justify-content: flex-end;
     align-items: center;
   }
-
   @media (max-width: 768px) {
     .nav-menu {
       flex-direction: column;
@@ -50,8 +49,10 @@
     .nav-menu a {
       margin: 5px;
     }
+    :global(.content) {
+      height: 490px;
+    }
   }
-
   .nav-menu a {
     color: white;
     margin-left: 20px;
@@ -61,5 +62,13 @@
   }
   .betshark-logo {
     height: 40px;
+  }
+  :global(.content) {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 82px);
   }
 </style>

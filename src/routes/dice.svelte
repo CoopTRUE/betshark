@@ -3,5 +3,5 @@
 </script>
 
 <h1>
-  dice!
+  hello!
 </h1>
