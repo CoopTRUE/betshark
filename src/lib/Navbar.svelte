@@ -8,6 +8,7 @@
     <div class="nav-container">
       <div class="nav-menu">
         <a href="/" use:link><img src={betshark} alt="Betshark logo" class="betshark-logo"></a>
+        <a href="slots" use:link>Slots</a>
         <a href="dice" use:link>Dice</a>
         <a href="coinflip" use:link>Coinflip</a>
       </div>
