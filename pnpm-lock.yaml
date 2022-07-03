@@ -5,6 +5,7 @@ specifiers:
   cors: ^2.8.5
   express: ^4.18.1
   nodemon: ^2.0.18
+  normalize.css: ^8.0.1
   svelte: ^3.44.0
   svelte-routing: ^1.6.0
   vite: ^2.9.9
@@ -14,6 +15,7 @@ dependencies:
   cors: 2.8.5
   express: 4.18.1
   nodemon: 2.0.18
+  normalize.css: 8.0.1
   svelte: 3.48.0
   svelte-routing: 1.6.0_lvfi2wesz6u4l5rfbnetbucfmm
   vite: 2.9.13
@@ -1098,6 +1100,10 @@ packages:
   /normalize-url/4.5.1:
     resolution: {integrity: sha512-9UZCFRHQdNrfTpGg8+1INIg93B6zE0aXMVFkw1WFwvO4SlZywU6aLg5Of0Ap/PgcbSw4LNxvMWXMeugwMCX0AA==}
     engines: {node: '>=8'}
+    dev: false
+
+  /normalize.css/8.0.1:
+    resolution: {integrity: sha512-qizSNPO93t1YUuUhP22btGOo3chcvDFqFaj2TRybP0DMxkHOCTYwp3n34fel4a31ORXy4m1Xq0Gyqpb5m33qIg==}
     dev: false
 
   /object-assign/4.1.1:

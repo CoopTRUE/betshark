@@ -42,9 +42,10 @@
     font-size: 20px;
     margin: 0;
   }
-  @media (max-width: 468px) {
+  @media (max-width: 560px) {
     .welcome-text {
-      font-size: 25vw;
+      font-size: 20vw;
+      text-align: left;
     }
   }
   .surprise {
