@@ -1,65 +1,65 @@
 <script>
-  import logo from './assets/svelte.png'
-  import Counter from './lib/Counter.svelte'
+  import { Router, Route, Link, link } from 'svelte-routing'
+  import Home from './routes/home.svelte'
+  import Dice from './routes/dice.svelte'
+  import Coinflip from './routes/coinflip.svelte'
+  import betshark from './assets/betshark-logo.png'
 </script>
 
-<main>
-  <img src={logo} alt="Svelte Logo" />
-  <h1>Hello world!</h1>
-
-  <Counter />
-
-  <p>
-    Visit <a href="https://svelte.dev">svelte.dev</a> to learn how to build Svelte
-    apps.
-  </p>
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme">SvelteKit</a> for
-    the officially supported framework, also powered by Vite!
-  </p>
-</main>
+<Router>
+  <div class="navbar">
+    <div class="nav-container">
+      <div class="nav-menu">
+        <a href="/" use:link><img src={betshark} alt="Betshark logo" class="betshark-logo"></a>
+        <a href="dice" use:link>Dice</a>
+        <a href="coinflip" use:link>Coinflip</a>
+      </div>
+    </div>
+  </div>
+  <Route path="/"><Home /></Route>
+  <Route path="/dice"><Dice /></Route>
+  <Route path="/coinflip"><Coinflip /></Route>
+</Router>
 
 <style>
-  :root {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  :global(body) {
+    margin: 0;
+    background-color: black;
+    color: white;
+  }
+  .navbar {
+    background-color: #28a6fa;
+    font-size: 40px;
+  }
+  .nav-container {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    padding: 10px;
+  }
+  .nav-menu {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
   }
 
-  main {
-    text-align: center;
-    padding: 1em;
-    margin: 0 auto;
-  }
-
-  img {
-    height: 16rem;
-    width: 16rem;
-  }
-
-  h1 {
-    color: #ff3e00;
-    text-transform: uppercase;
-    font-size: 4rem;
-    font-weight: 100;
-    line-height: 1.1;
-    margin: 2rem auto;
-    max-width: 14rem;
-  }
-
-  p {
-    max-width: 14rem;
-    margin: 1rem auto;
-    line-height: 1.35;
-  }
-
-  @media (min-width: 480px) {
-    h1 {
-      max-width: none;
+  @media (max-width: 768px) {
+    .nav-menu {
+      flex-direction: column;
     }
-
-    p {
-      max-width: none;
+    .nav-menu a {
+      margin: 5px;
     }
+  }
+
+  .nav-menu a {
+    color: white;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 5px;
+    text-decoration: none;
+  }
+  .betshark-logo {
+    height: 40px;
   }
 </style>
