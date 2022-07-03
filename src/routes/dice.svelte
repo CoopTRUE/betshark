@@ -2,6 +2,8 @@
 
 </script>
 
-<h1>
-  hello!
-</h1>
+<div class="content">
+  <h1>
+    dice
+  </h1>
+</div>

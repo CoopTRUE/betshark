@@ -23,6 +23,17 @@
 </div>
 
 <style>
+  .content {
+    animation: flyin 2s ease;
+  }
+  @keyframes flyin {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
   .welcome-text {
     font-size: 115px;
     margin: 0;
