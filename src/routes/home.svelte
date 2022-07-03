@@ -24,7 +24,7 @@
 
 <style>
   .content {
-    animation: flyin 2s ease;
+    animation: flyin 1.7s ease;
   }
   @keyframes flyin {
     0% {
@@ -42,6 +42,11 @@
     font-size: 20px;
     margin: 0;
   }
+  @media (max-width: 468px) {
+    .welcome-text {
+      font-size: 25vw;
+    }
+  }
   .surprise {
     margin:0;
     text-decoration: none;
@@ -50,7 +55,7 @@
   .surprise span {
     display: inline-block;
   }
-  .surprise:hover span{
+  .surprise:hover span {
     animation: jump 0.5s ease;
   }
   .surprise span:nth-child(8) {

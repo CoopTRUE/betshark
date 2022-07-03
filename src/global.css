@@ -3,15 +3,17 @@ body {
   background-color: black;
   color: white;
 }
-@media (max-width: 768px) {
-  .content {
-    height: 490px;
-  }
-}
 .content {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: calc(100vh - 82px);
+  text-align: center;
+}
+@media (max-width: 768px) {
+  .content {
+    height: 490px;
+    height: calc(100vh - 240px);
+  }
 }
