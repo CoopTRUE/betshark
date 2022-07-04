@@ -1,5 +1,5 @@
 # BETSHARK - DeFi gambling
-<img src="https://github.com/CoopTRUE/betshark/blob/main/src/assets/betshark-logo.png" alt="drawing" width="800"/>
+<img src="https://github.com/CoopTRUE/betshark/blob/main/src/assets/betshark-logo.png" alt="Betshark Logo" width="800"/>
 
 
 ### Dev
@@ -30,3 +30,5 @@ pnpm dev
 -   Express (For quick server serving)
 -   Vite (Crazy fast build speed)
 -   pnpm (Best package manager)
+<img src="https://github.com/CoopTRUE/betshark/blob/main/src/assets/blahaj.png" alt="BLAHAJ :D" width="450"/>
+<sub>secret blahaj easter egg :3</suyb>
