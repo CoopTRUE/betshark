@@ -67,32 +67,16 @@
 </div>
 
 <style>
+  @media (max-width: 1200px) {
+    .content {
+      display: block;
+    }
+  }
   .doors {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
+    flex-wrap: wrap;
   }
-  @media (max-width: 1200px) {
-    .combination {
-      margin-top: 200px;
-    }
-  }
-  @media (max-width: 769px) {
-    .combination {
-      margin-top: 300px;
-    }
-  }
-  @media (max-width: 720px) {
-    .combination {
-      margin-top: 600px;
-    }
-  }
-  @media (max-width: 480px) {
-    .combination {
-      margin-top: 1100px;
-    }
-  }
-
   .door {
     background: #fafafa;
     width: 200px;
@@ -101,7 +85,7 @@
     border-radius: 20px;
     margin: 20px;
     color: orange;
-    border: 10px solid orange;
+    /* border: 10px solid orange; */
   }
   .spinBtn {
     background: #fafafa;
@@ -109,5 +93,6 @@
     border-radius: 40px;
     padding: 20px;
     font-size: 50px;
+    cursor:grabbing;
   }
 </style>

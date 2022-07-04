@@ -1,16 +1,46 @@
 <script>
-  import { Router, Route, Link, link } from 'svelte-routing'
+  import { onMount } from 'svelte';
+  import { Router, link } from 'svelte-routing'
   import betshark from '../assets/betshark-logo.png'
+  const routes = [
+    'LOGO',
+    'slots',
+    'dice',
+    'coinflip'
+  ]
+  let selected = [
+    false,
+    false,
+    false,
+    false
+  ]
+
+  const updateSelected = index => {
+    selected = selected.map((_, i) => i === index)
+  }
+
+  onMount(() => {
+    selected[routes.indexOf(window.location.pathname.substring(1))] = true
+  })
 </script>
 
 <Router>
   <div class="navbar">
     <div class="nav-container">
       <div class="nav-menu">
-        <a href="/" use:link><img src={betshark} alt="Betshark logo" class="betshark-logo"></a>
-        <a href="slots" use:link>Slots</a>
-        <a href="dice" use:link>Dice</a>
-        <a href="coinflip" use:link>Coinflip</a>
+        <a href="/" use:link>
+          <img src={betshark} alt="Betshark logo" class="betshark-logo" on:click={()=>{updateSelected(0)}}>
+        </a>
+        {#each routes.slice(1) as page, index}
+          <a
+            href={"/"+page}
+            use:link
+            class:clicked={selected[index+1]}
+            on:click={() => updateSelected(index+1)}
+          >
+            {page.charAt(0).toUpperCase()+page.substring(1)}
+          </a>
+        {/each}
       </div>
     </div>
   </div>
@@ -49,5 +79,11 @@
   }
   .betshark-logo {
     height: 40px;
+  }
+  a:hover {
+    transform: translateY(-5px);
+  }
+  .clicked {
+    color: blue !important;
   }
 </style>
