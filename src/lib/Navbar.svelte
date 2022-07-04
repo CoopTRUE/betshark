@@ -89,11 +89,14 @@
     height: 40px;
   }
   a {
-    transition: all 0.4s;
+    transition-property: transform, color, margin;
+    transition-duration: 0.4s, 0.4s, 0.9s;
+    /* transition: margin 0.9s; */
+    /* transition: */
+
     transform: translateY(0);
   }
   a:hover {
-    transition: all 0.4s;
     transform: translateY(-5px);
     text-shadow: 0 0 10px;
   }
