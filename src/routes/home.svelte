@@ -1,5 +1,7 @@
 <script>
+  import { onMount, onDestroy } from 'svelte'
   import { link, Router } from 'svelte-routing'
+
   const randomPage = () => {
     const pages = ['dice', 'coinflip', 'slots']
     return pages[Math.floor(Math.random() * pages.length)]
@@ -36,48 +38,52 @@
     return result;
   }
 
-  window.addEventListener('mousemove', move => {
-    let positionX = move.pageX / window.innerWidth;
-    let positionY = move.pageY / window.innerHeight;
-    let x00, x01, x11, x10;
+  const handleMove = move => {
+      let positionX = move.pageX / window.innerWidth;
+      let positionY = move.pageY / window.innerHeight;
+      let x00, x01, x11, x10;
 
-    if (positionX > 0.5 && positionY > 0.5) {
-      x00 = center;
-      x01 = bottomMiddle;
-      x10 = rightMiddle;
-      x11 = bottomRight;
-      positionX = 2.0 * (positionX - 0.5); // scale position back to [0, 1]
-      positionY = 2.0 * (positionY - 0.5);
-    } else if (positionX > 0.5 && positionY <= 0.5) {
-      x00 = topMiddle;
-      x01 = center;
-      x10 = topRight;
-      x11 = rightMiddle;
-      positionX = 2.0 * (positionX - 0.5);
-      positionY = 2.0 * (positionY);
-    } else if (positionX <= 0.5 && positionY <= 0.5) {
-      x00 = topLeft;
-      x01 = leftMiddle;
-      x10 = topMiddle;
-      x11 = center;
-      positionX = 2.0 * (positionX);
-      positionY = 2.0 * (positionY);
-    } else if (positionX <= 0.5 && positionY > 0.5) {
-      x00 = leftMiddle;
-      x01 = bottomLeft;
-      x10 = center;
-      x11 = bottomMiddle;
-      positionX = 2.0 * (positionX);
-      positionY = 2.0 * (positionY - 0.5);
-    } else {
-      // can't happen
+      if (positionX > 0.5 && positionY > 0.5) {
+        x00 = center;
+        x01 = bottomMiddle;
+        x10 = rightMiddle;
+        x11 = bottomRight;
+        positionX = 2.0 * (positionX - 0.5); // scale position back to [0, 1]
+        positionY = 2.0 * (positionY - 0.5);
+      } else if (positionX > 0.5 && positionY <= 0.5) {
+        x00 = topMiddle;
+        x01 = center;
+        x10 = topRight;
+        x11 = rightMiddle;
+        positionX = 2.0 * (positionX - 0.5);
+        positionY = 2.0 * (positionY);
+      } else if (positionX <= 0.5 && positionY <= 0.5) {
+        x00 = topLeft;
+        x01 = leftMiddle;
+        x10 = topMiddle;
+        x11 = center;
+        positionX = 2.0 * (positionX);
+        positionY = 2.0 * (positionY);
+      } else if (positionX <= 0.5 && positionY > 0.5) {
+        x00 = leftMiddle;
+        x01 = bottomLeft;
+        x10 = center;
+        x11 = bottomMiddle;
+        positionX = 2.0 * (positionX);
+        positionY = 2.0 * (positionY - 0.5);
+      } else {
+        // can't happen
+      }
+      const rgb = interpolateArray(x00, x01, x10, x11, positionX, positionY)
+
+      betsharkName.style.color = 'rgb(' + rgb.join(',') + ')'
     }
 
-
-
-    const rgb = interpolateArray(x00, x01, x10, x11, positionX, positionY)
-
-    betsharkName.style.color = 'rgb(' + rgb.join(',') + ')'
+  onMount(() => {
+    window.addEventListener('mousemove', handleMove)
+  })
+  onDestroy(() => {
+    removeEventListener('mousemove', handleMove)
   })
 </script>
 
@@ -167,8 +173,33 @@
     }
   }
   .betsharkName {
-    color: #0099ff;
+    /* color: #0099ff; */
     text-shadow: 0 0 10px;
+  }
+  .betsharkName:not(:hover) {
+    background: linear-gradient(90deg,
+            rgba(255, 0, 0, 1) 0%,
+            rgba(255, 154, 0, 1) 10%,
+            rgba(208, 222, 33, 1) 20%,
+            rgba(79, 220, 74, 1) 30%,
+            rgba(63, 218, 216, 1) 40%,
+            rgba(47, 201, 226, 1) 50%,
+            rgba(28, 127, 238, 1) 60%,
+            rgba(95, 21, 242, 1) 70%,
+            rgba(186, 12, 248, 1) 80%,
+            rgba(251, 7, 217, 1) 90%,
+            rgba(255, 0, 0, 1) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-size: 300% auto;
+    color: transparent;
+    animation: rainbow_animation 140s linear infinite;
+    font-weight: bolder;
+  }
+  @keyframes rainbow_animation {
+    to {
+        background-position: 20000vh 0;
+    }
   }
 
 </style>
