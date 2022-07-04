@@ -3,7 +3,7 @@
   import { Router, link } from 'svelte-routing'
   import betshark from '../assets/betshark-logo.png'
   const routes = [
-    'LOGO',
+    '', //logo
     'slots',
     'dice',
     'coinflip'
@@ -28,8 +28,8 @@
   <div class="navbar">
     <div class="nav-container">
       <div class="nav-menu">
-        <a href="/" use:link>
-          <img src={betshark} alt="Betshark logo" class="betshark-logo" on:click={()=>{updateSelected(0)}}>
+        <a href="/" use:link class:imgClicked={selected[0]} on:click={()=>{updateSelected(0)}}>
+          <img src={betshark} alt="Betshark logo" class="betshark-logo" >
         </a>
         {#each routes.slice(1) as page, index}
           <a
@@ -80,10 +80,21 @@
   .betshark-logo {
     height: 40px;
   }
+  a {
+    transition: all 0.4s;
+    transform: translateY(0);
+  }
   a:hover {
+    transition: all 0.4s;
     transform: translateY(-5px);
+    text-shadow: 0 0 10px;
   }
   .clicked {
-    color: blue !important;
+    color: rgb(111, 0, 255) !important;
+    text-shadow: 0 0 10px;
+  }
+  .imgClicked {
+    -webkit-filter: drop-shadow(1px 1px 0 rgb(111, 0, 255)) drop-shadow(-1px -1px 0 rgb(111, 0, 255));
+    filter:drop-shadow(1px 1px 0 rgb(111, 0, 255)) drop-shadow(-1px -1px 0 rgb(111, 0, 255));
   }
 </style>
