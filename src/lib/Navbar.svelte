@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { Router, link } from 'svelte-routing'
   import betshark from '../assets/betshark-logo.png'
+  import blahaj from '../assets/blahaj.png'
   const routes = [
     '', //logo
     'slots',
@@ -14,12 +15,19 @@
     false,
     false
   ]
+  let image
 
   const updateSelected = index => {
     selected = selected.map((_, i) => i === index)
   }
 
   onMount(() => {
+    // 1 in 5 chance of getting blahaj :D
+    if (Math.floor(Math.random() * (4 - 0 + 1)) + 0 == 0) {
+      image = blahaj
+    } else {
+      image = betshark
+    }
     selected[routes.indexOf(window.location.pathname.substring(1))] = true
   })
 </script>
@@ -29,7 +37,7 @@
     <div class="nav-container">
       <div class="nav-menu">
         <a href="/" use:link class:imgClicked={selected[0]} on:click={()=>{updateSelected(0)}}>
-          <img src={betshark} alt="Betshark logo" class="betshark-logo" >
+          <img src={image} alt="Betshark logo" class="betshark-logo" >
         </a>
         {#each routes.slice(1) as page, index}
           <a
@@ -78,7 +86,7 @@
     text-decoration: none;
   }
   .betshark-logo {
-    height: 40px;
+    width: 86px;
   }
   a {
     transition: all 0.4s;
