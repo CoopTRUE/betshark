@@ -86,7 +86,7 @@
     text-decoration: none;
   }
   .betshark-logo {
-    width: 85px;
+    height: 40px;
   }
   a {
     transition: all 0.4s;
