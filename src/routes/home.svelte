@@ -80,10 +80,14 @@
     }
 
   onMount(() => {
-    window.addEventListener('mousemove', handleMove)
+    if(!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) {
+      window.addEventListener('mousemove', handleMove)
+    }
   })
   onDestroy(() => {
-    removeEventListener('mousemove', handleMove)
+    if(!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) {
+      removeEventListener('mousemove', handleMove)
+    }
   })
 </script>
 
