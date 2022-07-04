@@ -94,7 +94,7 @@
     text-shadow: 0 0 10px;
   }
   .imgClicked {
-    -webkit-filter: drop-shadow(1px 1px 0 rgb(111, 0, 255)) drop-shadow(-1px -1px 0 rgb(111, 0, 255));
-    filter:drop-shadow(1px 1px 0 rgb(111, 0, 255)) drop-shadow(-1px -1px 0 rgb(111, 0, 255));
+    /* -webkit-filter: drop-shadow(1px 1px 0 rgb(111, 0, 255)) drop-shadow(-1px -1px 0 rgb(111, 0, 255));
+    filter:drop-shadow(1px 1px 0 rgb(111, 0, 255)) drop-shadow(-1px -1px 0 rgb(111, 0, 255)); */
   }
 </style>
