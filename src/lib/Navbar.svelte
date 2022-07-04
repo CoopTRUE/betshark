@@ -91,6 +91,7 @@
   a {
     transition-property: transform, color, margin;
     transition-duration: 0.4s, 0.4s, 0.9s;
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
     /* transition: margin 0.9s; */
     /* transition: */
 

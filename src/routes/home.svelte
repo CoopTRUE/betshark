@@ -178,7 +178,10 @@
   }
   .betsharkName {
     /* color: #0099ff; */
-    text-shadow: 0 0 10px;
+    text-shadow: 0 0 15px;
+    letter-spacing: -5px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bolder;
   }
   .betsharkName:not(:hover) {
     background: linear-gradient(90deg,
@@ -198,7 +201,6 @@
     background-size: 300% auto;
     color: transparent;
     animation: rainbow_animation 140s linear infinite;
-    font-weight: bolder;
   }
   @keyframes rainbow_animation {
     to {
