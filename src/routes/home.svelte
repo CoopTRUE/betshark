@@ -1,7 +1,7 @@
 <script>
   import { link, Router } from 'svelte-routing'
   const randomPage = () => {
-    const pages = ['dice', 'coinflip']
+    const pages = ['dice', 'coinflip', 'slots']
     return pages[Math.floor(Math.random() * pages.length)]
   }
 </script>

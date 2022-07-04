@@ -1,20 +1,16 @@
 <script>
   import { onMount } from 'svelte'
   const items = [
-    "🍭",
-    "❌",
-    "⛄️",
-    "🦄",
+    "🍇",
+    "🍉",
+    "🍋",
     "🍌",
-    "💩",
-    "👻",
-    "😻",
-    "💵",
-    "🤡",
-    "🦖",
+    "🍍",
     "🍎",
-    "😂",
-    "🖕",
+    "🍐",
+    "🍑",
+    "🍒",
+    "🍓"
   ]
   let boxes = []
   let combination = ''
@@ -46,11 +42,11 @@
         box.textContent = item
         boxesElem.appendChild(box)
       }
-      boxesElem.style.transitionDuration = '2s'
+      boxesElem.style.transitionDuration = '2.5s'
       boxesElem.style.transform = 'translateY(0px)'
       setTimeout(() => {
         combination += boxesElem.children[0].textContent
-      }, 1700)
+      }, 2100)
       await new Promise(resolve => setTimeout(resolve, 200))
     }
   }
@@ -59,7 +55,7 @@
 </script>
 
 <div class="content">
-  <h1>YOU WON: {combination}</h1>
+  <h1 class='combination'>YOU WON: {combination}</h1>
   <div class="doors">
     {#each Array(5) as _, index}
       <div class="door">
@@ -73,7 +69,30 @@
 <style>
   .doors {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
+  @media (max-width: 1200px) {
+    .combination {
+      margin-top: 200px;
+    }
+  }
+  @media (max-width: 769px) {
+    .combination {
+      margin-top: 300px;
+    }
+  }
+  @media (max-width: 720px) {
+    .combination {
+      margin-top: 600px;
+    }
+  }
+  @media (max-width: 480px) {
+    .combination {
+      margin-top: 1100px;
+    }
+  }
+
   .door {
     background: #fafafa;
     width: 200px;
@@ -81,6 +100,8 @@
     overflow: hidden;
     border-radius: 20px;
     margin: 20px;
+    color: orange;
+    border: 10px solid orange;
   }
   .spinBtn {
     background: #fafafa;
