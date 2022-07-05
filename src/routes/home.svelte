@@ -122,6 +122,8 @@
   .welcome-text {
     font-size: 115px;
     margin: 0;
+    line-height: 110px;
+    padding-bottom: 20px;
   }
   .welcome-subtext {
     font-size: 20px;

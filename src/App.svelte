@@ -1,6 +1,7 @@
 <script>
   import { Router, Route, Link, link } from 'svelte-routing'
-  import Navbar from './lib/Navbar.svelte';
+  import Navbar from './lib/Navbar.svelte'
+  import Footer from './lib/Footer.svelte'
   import Home from './routes/home.svelte'
   import Dice from './routes/dice.svelte'
   import Coinflip from './routes/coinflip.svelte'
@@ -14,3 +15,4 @@
   <Route path='/dice'><Dice /></Route>
   <Route path='/coinflip'><Coinflip /></Route>
 </Router>
+<Footer />

@@ -67,15 +67,16 @@
 </div>
 
 <style>
-  @media (max-width: 1200px) {
+  @media (max-width: 1199.5px) {
     .content {
-      display: block;
+      height: fit-content;
     }
   }
   .doors {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    overflow: hidden;
   }
   .door {
     background: #fafafa;
@@ -94,5 +95,6 @@
     padding: 20px;
     font-size: 50px;
     cursor:grabbing;
+    margin-bottom: 50px;
   }
 </style>
