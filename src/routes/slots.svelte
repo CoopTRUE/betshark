@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte'
+  import slotSpinning from '../audio/slot-spinning.mp3'
   const items = [
     "🍇",
     "🍉",
@@ -14,6 +14,7 @@
   ]
   let boxes = []
   let combination = ''
+  let slotSpinningAudio
 
   function shuffle([...arr]) {
     let m = arr.length;
@@ -25,6 +26,9 @@
   }
 
   async function spin() {
+    let completed = 0
+    slotSpinningAudio.currentTime = 0;
+    slotSpinningAudio.play();
     combination = ''
     for (const boxesElem of boxes) {
       const door = boxesElem.parentElement
@@ -46,7 +50,10 @@
       boxesElem.style.transform = 'translateY(0px)'
       setTimeout(() => {
         combination += boxesElem.children[0].textContent
-      }, 2100)
+        if (++completed === boxes.length) {
+          slotSpinningAudio.pause();
+        }
+      }, 2200)
       await new Promise(resolve => setTimeout(resolve, 200))
     }
   }
@@ -54,8 +61,8 @@
 
 </script>
 
+<audio src={slotSpinning} preload="auto" bind:this={slotSpinningAudio}></audio>
 <div class="content">
-  <h1 class='combination'>YOU WON: {combination}</h1>
   <div class="doors">
     {#each Array(5) as _, index}
       <div class="door">
@@ -63,7 +70,8 @@
       </div>
     {/each}
   </div>
-  <button on:click={spin} class='spinBtn'>Spin!</button>
+  <h1 class="combination">YOU WON: {combination}</h1>
+  <button on:click={spin} class="spinBtn">Spin!</button>
 </div>
 
 <style>
@@ -88,13 +96,16 @@
     color: orange;
     /* border: 10px solid orange; */
   }
+  .combination {
+    margin: 15px;
+  }
   .spinBtn {
     background: #fafafa;
     border: 1px solid #fafafa;
     border-radius: 40px;
     padding: 20px;
     font-size: 50px;
-    cursor:grabbing;
+    cursor: grabbing;
     margin-bottom: 50px;
   }
 </style>
