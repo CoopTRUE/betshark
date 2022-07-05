@@ -4,6 +4,7 @@
   import betshark from '../assets/betshark-logo.png'
   import blahaj from '../assets/blahaj.png'
   import hitmarker from '../audio/hitmarker.mp3'
+  import { web3 } from './stores'
 
   const routes = [
     '', //logo
