@@ -1,5 +1,7 @@
 <script>
+  import MetaButton from '../lib/MetaButton.svelte';
   import slotSpinning from '../audio/slot-spinning.mp3'
+
   const items = [
     "🍇",
     "🍉",
@@ -62,6 +64,7 @@
 </script>
 
 <audio src={slotSpinning} preload="auto" bind:this={slotSpinningAudio}></audio>
+<MetaButton />
 <div class="content">
   <div class="doors">
     {#each Array(5) as _, index}

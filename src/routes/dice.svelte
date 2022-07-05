@@ -1,4 +1,5 @@
 <script>
+  import MetaButton from '../lib/MetaButton.svelte';
   let diceOne, diceTwo;
 
   function rollDice() {
@@ -9,6 +10,7 @@
   }
 </script>
 
+<MetaButton />
 <div class="content">
   <!-- MAJOR SHOUTOUT TO https://codepen.io/lenasta92579651/pen/yLeVmdW -->
   <div class="dice-container">

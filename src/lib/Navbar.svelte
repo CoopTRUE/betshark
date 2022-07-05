@@ -3,21 +3,21 @@
   import { Router, link } from 'svelte-routing'
   import betshark from '../assets/betshark-logo.png'
   import blahaj from '../assets/blahaj.png'
+  import hitmarker from '../audio/hitmarker.mp3'
+
   const routes = [
     '', //logo
     'slots',
     'dice',
     'coinflip'
   ]
-  let selected = [
-    false,
-    false,
-    false,
-    false
-  ]
-  let image
+  let selected = Array(routes.length).fill(false)
+
+  let image, hitmarkerAudio
 
   const updateSelected = index => {
+    hitmarkerAudio.currentTime = 0
+    hitmarkerAudio.play()
     selected = selected.map((_, i) => i === index)
   }
 
@@ -32,6 +32,7 @@
   })
 </script>
 
+<audio src={hitmarker} preload="auto" bind:this={hitmarkerAudio}></audio>
 <Router>
   <div class="navbar">
     <div class="nav-container">
