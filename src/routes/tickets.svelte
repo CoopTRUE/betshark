@@ -21,6 +21,7 @@
   let cryptoType = ''
 
   const purchase = () => {
+    if (cryptoType==='' || ticketCount===0) return
     const id = toast.push('Purchasing...', {
       initial: 0,
       next: 0,
