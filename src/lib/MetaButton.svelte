@@ -1,7 +1,7 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
+  import { web3, address } from '../stores'
   import Web3 from 'web3/dist/web3.min.js'
-  import { web3, address } from './stores'
 
   let provider, addressValue
   const unsubscribe = address.subscribe(value => {

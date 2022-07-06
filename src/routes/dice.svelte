@@ -1,5 +1,7 @@
 <script>
-  import MetaButton from '../lib/MetaButton.svelte';
+  import { web3, address } from '../stores'
+  import MetaButton from '../lib/MetaButton.svelte'
+
   let diceOne, diceTwo;
 
   function rollDice() {

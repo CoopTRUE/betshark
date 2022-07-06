@@ -1,5 +1,7 @@
 <script>
-  let coin
+  import { web3, address } from '../stores'
+  import MetaButton from '../lib/MetaButton.svelte'
+
   let flipSide
   let click = false
 
@@ -13,12 +15,12 @@
   }
 </script>
 
+<MetaButton />
 <div class="content">
   <div
     class="coin"
     class:heads={flipSide=='heads'}
     class:tails={flipSide=='tails'}
-    bind:this={coin}
     on:click={flip}
   >
     <div class="heads-side"></div>
@@ -61,10 +63,10 @@
   }
 
   .heads {
-    animation: flipHeads 3s ease-out forwards;
+    animation: flipHeads 4s forwards;
   }
   .tails {
-    animation: flipTails 3s ease-out forwards;
+    animation: flipTails 4s forwards;
   }
 
   @keyframes flipHeads {
