@@ -1,5 +1,4 @@
 <script>
-  import { onMount } from 'svelte';
   import { Router, link } from 'svelte-routing'
   import { web3 } from '../stores'
   import betshark from '../assets/betshark-logo.png'
@@ -22,15 +21,13 @@
     selected = selected.map((_, i) => i === index)
   }
 
-  onMount(() => {
-    // 1 in 5 chance of getting blahaj :D
-    if (Math.floor(Math.random() * (4 - 0 + 1)) + 0 == 0) {
-      image = blahaj
-    } else {
-      image = betshark
-    }
-    selected[routes.indexOf(window.location.pathname.substring(1))] = true
-  })
+  if (Math.floor(Math.random() * (4 - 0 + 1)) + 0 == 0) {
+    image = blahaj
+  } else {
+    image = betshark
+  }
+  selected[routes.indexOf(window.location.pathname.substring(1))] = true
+
 </script>
 
 <audio src={hitmarker} preload="auto" bind:this={hitmarkerAudio}></audio>

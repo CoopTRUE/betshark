@@ -1,21 +1,39 @@
 <script>
+  import { onMount } from 'svelte'
   import { web3, address } from '../stores'
+  import axios from 'axios'
   import MetaButton from '../lib/MetaButton.svelte'
 
+  const apiUrl = 'http://localhost:2000/'
   let flipSide
-  let click = false
+  let flipable = false
+  let triesRemaining = 0
 
   const flip = () => {
-    click = !click
-    if (click) {
-      flipSide = Math.random() < 0.5 ? 'heads' : 'tails'
-    } else {
-      flipSide = ''
-    }
+
   }
+
+  onMount(() => {
+    // fetch('http://localhost:2000/tries')
+    //   .then(res => res.json())
+    //   .then(res => {
+    //     console.log(res)
+    //   })
+    axios.get('http://localhost:2000/tries', {params: {
+      game: 'coinflip',
+      address: address
+    }})
+      .then(res => {
+        triesRemaining = res.data
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  })
 </script>
 
 <MetaButton />
+<h4>tries remaining: {triesRemaining}</h4>
 <div class="content">
   <div
     class="coin"
@@ -26,13 +44,13 @@
     <div class="heads-side"></div>
     <div class="tails-side"></div>
   </div>
+  <button on:click={flip}>Flip!</button>
 </div>
 
 <style>
   .coin {
     width: 200px;
     height: 200px;
-    cursor: pointer;
   }
   .coin div {
     width: 100%;
