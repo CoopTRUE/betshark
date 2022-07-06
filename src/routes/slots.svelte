@@ -1,5 +1,5 @@
 <script>
-  import MetaButton from '../lib/MetaButton.svelte';
+  import MetaButton from '../lib/Login.svelte';
   import slotSpinning from '../audio/slot-spinning.mp3'
 
   const items = [

@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte'
   import { web3, address } from '../stores'
-  import MetaButton from '../lib/MetaButton.svelte'
+  import MetaButton from '../lib/Login.svelte'
   import Tickets from '../lib/Tickets.svelte'
   let tickets;
 

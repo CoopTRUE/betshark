@@ -1,6 +1,7 @@
 <script>
-  import { onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy } from 'svelte'
   import { web3, address } from '../stores'
+  import { toast } from '@zerodevx/svelte-toast'
   import Web3 from 'web3/dist/web3.min.js'
 
   let provider, addressValue
@@ -9,6 +10,10 @@
   });
 
   const connectMetamask = async() => {
+    if (provider === undefined) {
+      web3Error()
+      return
+    }
     if (addressValue === null) {
       if (!provider.selectedAddress) {
         await provider.request({ method: 'eth_requestAccounts' })
@@ -17,11 +22,24 @@
     }
   }
 
+  const web3Error = () => {
+    toast.push('Please install web3 wallet!', {
+        theme: {
+          '--toastBackground': '#F56565',
+          '--toastBarBackground': '#C53030'
+        }
+    })
+  }
+
   onMount(() => {
     // @ts-ignore
     provider = window.ethereum
+    if (provider === undefined) {
+      return
+    }
     if (web3 !== null) {
       web3.set(new Web3(provider, { transactionBlockTimeout: 9999 }))
+
     }
     connectMetamask()
 

@@ -1,13 +1,13 @@
 <script>
   import { onMount } from 'svelte'
   import { address, tickets } from '../stores'
-  import MetaButton from '../lib/MetaButton.svelte'
+  import MetaButton from './Login.svelte'
   import axios from 'axios'
 
-  export let needTickets = true
+  export let needTickets = false
 
   onMount(() => {
-    if ($tickets !== null) {
+    if ($tickets !== null || $address === null) {
       return
     }
     console.log('hii')

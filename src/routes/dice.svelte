@@ -1,6 +1,6 @@
 <script>
   import { web3, address } from '../stores'
-  import MetaButton from '../lib/MetaButton.svelte'
+  import MetaButton from '../lib/Login.svelte'
 
   let diceOne, diceTwo;
   let selector1, selector2
