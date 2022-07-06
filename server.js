@@ -9,14 +9,13 @@ const __dirname = resolve()
 app.use(cors())
 app.use(express.static(join(__dirname, 'dist')))
 
-app.get('/tries', (request, response) => {
-    const { game, address } = request.query
-    if (!game || !address) {
-        return response.status(400).send('Missing game')
+app.get('/tickets/:address', (request, response) => {
+    const address = request.params.address
+    console.log(request.params)
+    if (address === undefined || !/^0x[a-fA-F0-9]{40}$/.test(address)) {
+        return response.status(400).send('Invalid address')
     }
-    if (game === 'coinflip') {
-        return response.json(3)
-    }
+    return response.json(5)
 })
 
 app.get('*', (request, response) => {

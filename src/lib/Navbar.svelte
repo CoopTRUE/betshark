@@ -4,12 +4,12 @@
   import betshark from '../assets/betshark-logo.png'
   import blahaj from '../assets/blahaj.png'
   import hitmarker from '../audio/hitmarker.mp3'
-
   const routes = [
     '', //logo
     'slots',
     'dice',
-    'coinflip'
+    'coinflip',
+    'tickets',
   ]
   let selected = Array(routes.length).fill(false)
 

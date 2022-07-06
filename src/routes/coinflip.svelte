@@ -1,10 +1,10 @@
 <script>
   import { onMount } from 'svelte'
   import { web3, address } from '../stores'
-  import axios from 'axios'
   import MetaButton from '../lib/MetaButton.svelte'
+  import Tickets from '../lib/Tickets.svelte'
+  let tickets;
 
-  const apiUrl = 'http://localhost:2000/'
   let flipSide
   let flipable = false
   let triesRemaining = 0
@@ -12,28 +12,10 @@
   const flip = () => {
 
   }
-
-  onMount(() => {
-    // fetch('http://localhost:2000/tries')
-    //   .then(res => res.json())
-    //   .then(res => {
-    //     console.log(res)
-    //   })
-    axios.get('http://localhost:2000/tries', {params: {
-      game: 'coinflip',
-      address: address
-    }})
-      .then(res => {
-        triesRemaining = res.data
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  })
 </script>
 
 <MetaButton />
-<h4>tries remaining: {triesRemaining}</h4>
+<Tickets />
 <div class="content">
   <div
     class="coin"
