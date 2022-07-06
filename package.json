@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.0.0-next.30",
+    "@zerodevx/svelte-toast": "^0.7.2",
     "axios": "^0.27.2",
     "concurrently": "^7.2.2",
     "cors": "^2.8.5",

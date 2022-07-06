@@ -1,5 +1,6 @@
 <script>
   import { Router, Route, Link, link } from 'svelte-routing'
+  import { SvelteToast } from '@zerodevx/svelte-toast'
   import Navbar from './lib/Navbar.svelte'
   import Footer from './lib/Footer.svelte'
   import Home from './routes/home.svelte'
@@ -18,3 +19,4 @@
   <Route path='/tickets'><Tickets /></Route>
 </Router>
 <Footer />
+<SvelteToast />

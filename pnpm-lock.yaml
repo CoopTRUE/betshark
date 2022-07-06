@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@sveltejs/vite-plugin-svelte': ^1.0.0-next.30
+  '@zerodevx/svelte-toast': ^0.7.2
   axios: ^0.27.2
   concurrently: ^7.2.2
   cors: ^2.8.5
@@ -15,6 +16,7 @@ specifiers:
 
 dependencies:
   '@sveltejs/vite-plugin-svelte': 1.0.0-next.49_svelte@3.48.0+vite@2.9.13
+  '@zerodevx/svelte-toast': 0.7.2
   axios: 0.27.2
   concurrently: 7.2.2
   cors: 2.8.5
@@ -279,6 +281,10 @@ packages:
     resolution: {integrity: sha512-Da66lEIFeIz9ltsdMZcpQvmrmmoqrfju8pm1BH8WbYjZSwUgCwXLb9C+9XYogwBITnbsSaMdVPb2ekf7TV+03w==}
     dependencies:
       '@types/node': 18.0.0
+    dev: false
+
+  /@zerodevx/svelte-toast/0.7.2:
+    resolution: {integrity: sha512-vWiY6IqsstcOoQ8PFBuFuxgPkj1JFAGhUF9gC7wLx7c5A9SSfdtxWs/39ekGSIeyJK0yqWhTcmzGrCEWSELzDw==}
     dev: false
 
   /abbrev/1.1.1:

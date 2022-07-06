@@ -22,7 +22,7 @@
 </script>
 
 <div class="tickets">
-  {$tickets}🎟️
+  {$tickets ?? ''}🎟️
   {#if needTickets}
     <a href="tickets">Need tickets?</a>
   {/if}
