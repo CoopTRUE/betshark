@@ -1,65 +1,98 @@
 <script>
-  import { onMount, onDestroy } from 'svelte'
-  import { web3, address } from '../stores'
+  import { onMount } from 'svelte'
+  import { web3, address, uuid } from '../stores'
   import { toast } from '@zerodevx/svelte-toast'
   import Web3 from 'web3/dist/web3.min.js'
+  import axios from 'axios';
 
-  let provider, addressValue
-  const unsubscribe = address.subscribe(value => {
-    addressValue = value
-  });
+  let provider
 
   const connectMetamask = async() => {
-    if (provider === undefined) {
-      web3Error()
-      return
-    }
-    if (addressValue === null) {
-      if (!provider.selectedAddress) {
-        await provider.request({ method: 'eth_requestAccounts' })
-      }
-      address.set(provider.selectedAddress)
-    }
-  }
-
-  const web3Error = () => {
-    toast.push('Please install web3 wallet!', {
+    // @ts-ignore
+    provider = window.ethereum
+    if (!provider) {
+      toast.push('Please install web3 wallet!', {
         theme: {
           '--toastBackground': '#F56565',
           '--toastBarBackground': '#C53030'
         }
+      })
+      return
+    }
+    if (!$web3) {
+      web3.set(new Web3(provider, { transactionBlockTimeout: 9999 }))
+    }
+    try {
+      await provider.request({ method: 'eth_requestAccounts' })
+    } catch (err) {
+      toast.push('ERROR: User closed metamask!', {
+        theme: {
+          '--toastBackground': '#F56565',
+          '--toastBarBackground': '#C53030'
+        }
+      })
+      return
+    }
+    address.set(provider.selectedAddress)
+  }
+
+  const signIn = async() => {
+    await connectMetamask()
+    if (!$address) return
+    const id = toast.push('Waiting for user to sign...', {
+      initial: 0,
+      // next: 0,
+      dismissable: false
+    })
+
+    toast.set(id, {
+        msg: 'Waiting for signature confirmation...',
+        next: 0.33,
+    })
+
+    const message = $web3.utils.fromUtf8('Hai I am ' + $address)
+    let signature
+    try {
+      signature = await($web3.eth.personal.sign(message, $address))
+    } catch (error) {
+      toast.set(id, {
+        msg: 'EROR: User denied signature!',
+        next: 1,
+        theme: {
+          '--toastBackground': '#F56565',
+          '--toastBarBackground': '#C53030'
+        }
+      })
+    }
+
+    toast.set(id, {
+        msg: 'Waiting for server confirmation...',
+        next: 0.55,
+    })
+
+    axios.post('http://localhost:2000/login', {
+      address: $address,
+      signature: signature
+    })
+    .then(res => {
+      console.log(res)
+    })
+    .catch(err => {
+      console.log(err)
     })
   }
 
-  onMount(() => {
-    // @ts-ignore
-    provider = window.ethereum
-    if (provider === undefined) {
-      return
-    }
-    if (web3 !== null) {
-      web3.set(new Web3(provider, { transactionBlockTimeout: 9999 }))
+  const signOut = async() => {
 
-    }
-    connectMetamask()
-
-    provider.on('accountsChanged', accounts => {
-      if (accounts.length > 0) {
-        address.set(accounts[0])
-      } else {
-        address.set(null)
-      }
-    });
-  })
-
-
-  onDestroy(unsubscribe)
+  }
 </script>
 
 <div class="button-container">
-  <button on:click={connectMetamask}>
-    {$address ?? 'Connect to Metamask'}
-  </button>
+  {#if document.cookie.includes('uuid')}
+    <button on:click={signOut}>Sign Out</button>
+  {:else}
+    <button on:click={signIn}>Sign In</button>
+  {/if}
 </div>
 
 

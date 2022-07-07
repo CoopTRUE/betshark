@@ -34,6 +34,9 @@ app.get('/tickets/:address', async (request, response) => {
     return response.json(account.tickets)
 })
 
+app.get('/login', async (request, response) => {
+})
+
 app.get('*', (request, response) => {
     response.sendFile(resolve(__dirname, 'dist', 'index.html'))
 });
