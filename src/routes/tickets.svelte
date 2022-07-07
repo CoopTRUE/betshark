@@ -2,8 +2,8 @@
   import { toast } from '@zerodevx/svelte-toast'
   import axios from 'axios'
   import { web3, address } from '../stores'
-  import MetaButton from '../lib/Login.svelte'
-  import Tickets from '../lib/Tickets.svelte'
+  import Login from '../lib/Login.svelte'
+  import TicketTicker from '../lib/TicketTicker.svelte'
   import ABI from '../../constants/abi.json'
   import COINS from '../../constants/coins'
   import CHAINS from '../../constants/chains'
@@ -70,8 +70,8 @@
   }
 </script>
 
-<MetaButton />
-<Tickets needTickets={false}/>
+<Login />
+<TicketTicker needTickets={false}/>
 <div class="content">
   <div class="inner">
     <div class="inner-inner">

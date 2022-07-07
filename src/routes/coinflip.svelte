@@ -1,8 +1,8 @@
 <script>
   import { onMount } from 'svelte'
   import { web3, address } from '../stores'
-  import MetaButton from '../lib/Login.svelte'
-  import Tickets from '../lib/Tickets.svelte'
+  import Login from '../lib/Login.svelte'
+  import TicketTicker from '../lib/TicketTicker.svelte'
   let tickets;
 
   let flipSide
@@ -14,8 +14,8 @@
   }
 </script>
 
-<MetaButton />
-<Tickets />
+<Login />
+<TicketTicker />
 <div class="content">
   <div
     class="coin"

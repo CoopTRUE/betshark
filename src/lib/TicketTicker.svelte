@@ -1,23 +1,22 @@
 <script>
-  import { onMount } from 'svelte'
-  import { address, tickets } from '../stores'
+  import { onMount, onDestroy } from 'svelte'
+  import { uuid, tickets } from '../stores'
   import MetaButton from './Login.svelte'
   import axios from 'axios'
 
   export let needTickets = false
 
+  const getTickets = async(uuid) => {
+    const response = await axios.post('http://localhost:2000/api/getTickets', { uuid })
+    tickets.set(response.data.tickets)
+  }
+
   onMount(() => {
-    if ($tickets !== null || $address === null) {
+    if ($tickets!==null || !$uuid) {
       return
     }
-    console.log('hii')
-    axios.get('http://localhost:2000/tickets/' + $address)
-      .then(res => {
-        tickets.set(res.data)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    console.log('getTickets')
+    getTickets($uuid)
   })
 </script>
 

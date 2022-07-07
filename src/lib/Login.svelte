@@ -1,11 +1,13 @@
 <script>
   import { onMount } from 'svelte'
-  import { web3, address, uuid } from '../stores'
+  import { web3, uuid, address, tickets } from '../stores'
   import { toast } from '@zerodevx/svelte-toast'
   import Web3 from 'web3/dist/web3.min.js'
   import axios from 'axios';
 
   let provider
+  let uuidCookie
+  let addressCookie = ''
 
   const connectMetamask = async() => {
     // @ts-ignore
@@ -41,7 +43,7 @@
     if (!$address) return
     const id = toast.push('Waiting for user to sign...', {
       initial: 0,
-      // next: 0,
+      next: 0,
       dismissable: false
     })
 
@@ -70,25 +72,58 @@
         next: 0.55,
     })
 
-    axios.post('http://localhost:2000/login', {
-      address: $address,
-      signature: signature
-    })
-    .then(res => {
-      console.log(res)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    try {
+      const response = await axios.post('http://localhost:2000/api/login', {
+        address: $address,
+        signature: signature
+      })
+      document.cookie = 'uuid=' + response.data.uuid + ';path=/'
+      uuid.set(response.data.uuid)
+      tickets.set(response.data.tickets)
+      document.cookie = 'address=' + $address + ';path=/'
+      addressCookie = $address.substring(0, 6) + '...'
+      toast.set(id, {
+        msg: 'Success!',
+        next: 1,
+      })
+      uuidCookie = true
+    } catch (error) {
+      toast.set(id, {
+        msg: 'EROR: Unknown server error!',
+        next: 1,
+        theme: {
+          '--toastBackground': '#F56565',
+          '--toastBarBackground': '#C53030'
+        }
+      })
+    }
   }
 
-  const signOut = async() => {
-
+  const signOut = () => {
+    document.cookie = 'uuid=;path=/'
+    uuidCookie = false
+    document.cookie = 'address=;path=/'
+    addressCookie = ''
   }
+
+  onMount(() => {
+    if (document.cookie.includes('uuid')) {
+      if (!$uuid) {
+        uuid.set(document.cookie.split('uuid=')[1].split(';')[0])
+      }
+    } else {
+      document.cookie = 'uuid=;path=/'
+      document.cookie = 'address=;path=/'
+    }
+    uuidCookie = !!document.cookie.split('uuid=')[1].split(';')[0]
+    addressCookie = document.cookie.split('address=')[1].split(';')[0].substring(0, 6) + '...'
+  })
+
 </script>
 
 <div class="button-container">
-  {#if document.cookie.includes('uuid')}
+  {addressCookie}
+  {#if uuidCookie}
     <button on:click={signOut}>Sign Out</button>
   {:else}
     <button on:click={signIn}>Sign In</button>

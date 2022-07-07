@@ -1,5 +1,6 @@
 <script>
-  import MetaButton from '../lib/Login.svelte';
+  import Login from '../lib/Login.svelte';
+  import TicketTicker from '../lib/TicketTicker.svelte';
   import slotSpinning from '../audio/slot-spinning.mp3'
 
   const items = [
@@ -64,7 +65,8 @@
 </script>
 
 <audio src={slotSpinning} preload="auto" bind:this={slotSpinningAudio}></audio>
-<MetaButton />
+<Login />
+<TicketTicker />
 <div class="content">
   <div class="doors">
     {#each Array(5) as _, index}

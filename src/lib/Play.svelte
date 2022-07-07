@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
 import axios from 'axios';
 
   import { web3, address, tickets } from '../stores'
@@ -19,4 +19,4 @@ import axios from 'axios';
 
 <div>
   <button on:click={play}>{text}</button>
-</div>
+</div> -->

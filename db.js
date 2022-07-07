@@ -7,36 +7,34 @@ export async function connect() {
   console.log('Connected to betshark database')
 }
 
-export async function findAccount(addressOrUUID) {
+export async function findAccount(sigOrUUID) {
   let account
-  if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(addressOrUUID)) {
-    console.log('Finding account by UUID')
-    account = await Account.findOne({ uuid: addressOrUUID })
+  if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(sigOrUUID)) {
+    account = await Account.findOne({ uuid: sigOrUUID })
   } else {
-    console.log('Finding account by address')
-    account = await Account.findOne({ address: addressOrUUID })
+    account = await Account.findOne({ sig: sigOrUUID })
   }
   return account
 }
 
-export async function createAccount(address, uuid) {
-  const account = new Account({ address, uuid, tickets: 0 })
+export async function createAccount(address, sig, uuid) {
+  const account = new Account({ address, sig, uuid, tickets: 0 })
   await account.save()
 }
 
-export async function addTickets(addressOrUUID, tickets) {
-  const account = await findAccount(addressOrUUID)
+export async function addTickets(sigOrUUID, tickets) {
+  const account = await findAccount(sigOrUUID)
   if (account === null) {
-    throw new Error('Account not found with identifier ' + addressOrUUID)
+    throw new Error('Account not found with identifier ' + sigOrUUID)
   }
   account.tickets += tickets
   await account.save()
 }
 
-export async function removeTickets(addressOrUUID, tickets) {
-  const account = await findAccount(addressOrUUID)
+export async function removeTickets(sigOrUUID, tickets) {
+  const account = await findAccount(sigOrUUID)
   if (account === null) {
-    throw new Error('Account not found with identifier ' + addressOrUUID)
+    throw new Error('Account not found with identifier ' + sigOrUUID)
   }
   account.tickets -= tickets
   await account.save()

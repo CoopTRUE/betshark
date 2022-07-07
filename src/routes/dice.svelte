@@ -1,6 +1,7 @@
 <script>
   import { web3, address } from '../stores'
-  import MetaButton from '../lib/Login.svelte'
+  import Login from '../lib/Login.svelte'
+  import TicketTicker from '../lib/TicketTicker.svelte'
 
   let diceOne, diceTwo;
   let selector1, selector2
@@ -13,7 +14,8 @@
   }
 </script>
 
-<MetaButton />
+<Login />
+<TicketTicker />
 <div class="content">
   <!-- MAJOR SHOUTOUT TO https://codepen.io/lenasta92579651/pen/yLeVmdW -->
   <div class="dice-container">
