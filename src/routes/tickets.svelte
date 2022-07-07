@@ -14,7 +14,7 @@
   import busd from '../assets/crypto/busd.svg'
   import Web3 from 'web3/dist/web3.min.js'
 
-  let web3
+  let provider
   let ticketCount = 0
   const cryptoTypes = {
     usdc,
@@ -23,14 +23,25 @@
   }
   let cryptoType = ''
 
-  const purchase = () => {
+  const purchase = async() => {
     if (!cryptoType || !ticketCount) return
+    if (!provider) {
+      toast.push('Please install web3 wallet!', {
+        theme: {
+          '--toastBackground': '#F56565',
+          '--toastBarBackground': '#C53030'
+        }
+      })
+      return
+    }
+
+    const web3 = new Web3(provider, { transactionBlockTimeout: 9999 })
     const id = toast.push('Purchasing...', {
       initial: 0,
       next: 0,
       dismissable: false
     })
-    console.log(web3)
+
     const contract = new web3.eth.Contract(ABI, COINS[56][cryptoType])
     const sendCoins = contract.methods.transfer(
         SERVER_WALLET,
@@ -39,16 +50,16 @@
             CHAINS[56][2]
         )
     )
-    sendCoins.send({
-      // @ts-ignore
-      from: window.ethereum.selectedAddress,
-      value: 0,
-      maxPriorityFeePerGas: null,
-      maxFeePerGas: null,
-    }).then(txn => {
-      console.log(txn)
-    }).catch(err => {
-      console.log(err)
+
+    let txn
+    try {
+      txn = await sendCoins.send({
+        from: provider.selectedAddress,
+        value: 0,
+        maxPriorityFeePerGas: null,
+        maxFeePerGas: null,
+      })
+    } catch (err) {
       toast.set(id, {
         msg: 'Error: ' + (err.code===4001 ? 'User denied transaction!' : 'UNKNOWN ERROR'),
         next: 1,
@@ -57,7 +68,9 @@
           '--toastBarBackground': '#C53030'
         }
       })
-    })
+    }
+
+    console.log(txn)
 
     axios.post('http://localhost:2000/api/buyTickets', {
       uuid,
@@ -73,7 +86,7 @@
 
   onMount(() => {
     // @ts-ignore
-    web3 = new Web3(window.ethereum, { transactionBlockTimeout: 9999 })
+    provider = window.ethereum
   })
 </script>
 
