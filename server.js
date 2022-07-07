@@ -34,6 +34,9 @@ app.post('/api/buyTickets', async (request, response) => {
     }
     return response.json({ tickets: account.tickets })
 })
+app.get('/api/buyTickets', (request, response) => {
+    return response.send('stop trying to hack me')
+})
 
 app.post('/api/login', async (request, response) => {
     const { address, signature } = request.body
@@ -54,6 +57,9 @@ app.post('/api/login', async (request, response) => {
         return response.json({ uuid })
     }
     return response.json({ uuid: account.uuid, tickets: account.tickets })
+})
+app.get('/api/login', (request, response) => {
+    return response.send('stop trying to hack me')
 })
 
 app.get('*', (request, response) => {

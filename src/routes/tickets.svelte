@@ -25,6 +25,15 @@
 
   const purchase = async() => {
     if (!cryptoType || !ticketCount) return
+    if (!$uuid) {
+      toast.push('Please login first!', {
+        theme: {
+          '--toastBackground': '#F56565',
+          '--toastBarBackground': '#C53030'
+        }
+      })
+      return
+    }
     if (!provider) {
       toast.push('Please install web3 wallet!', {
         theme: {
