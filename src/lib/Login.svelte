@@ -38,7 +38,7 @@
     address.set(provider.selectedAddress)
   }
 
-  const signIn = async() => {
+  const login = async() => {
     await connectMetamask()
     if (!$address) return
     const id = toast.push('Waiting for user to sign...', {
@@ -99,11 +99,14 @@
     }
   }
 
-  const signOut = () => {
+  const logout = () => {
     document.cookie = 'uuid=;path=/'
     uuidCookie = false
     document.cookie = 'address=;path=/'
     addressCookie = ''
+    uuid.set(null)
+    address.set(null)
+    tickets.set(0)
   }
 
   onMount(() => {
@@ -116,7 +119,9 @@
       document.cookie = 'address=;path=/'
     }
     uuidCookie = !!document.cookie.split('uuid=')[1].split(';')[0]
-    addressCookie = document.cookie.split('address=')[1].split(';')[0].substring(0, 6) + '...'
+    if (document.cookie.split('address=')[1].split(';')[0]) {
+      addressCookie = document.cookie.split('address=')[1].split(';')[0].substring(0, 6) + '...'
+    }
   })
 
 </script>
@@ -124,9 +129,9 @@
 <div class="button-container">
   {addressCookie}
   {#if uuidCookie}
-    <button on:click={signOut}>Sign Out</button>
+    <button on:click={logout}>Sign Out</button>
   {:else}
-    <button on:click={signIn}>Sign In</button>
+    <button on:click={login}>Sign In</button>
   {/if}
 </div>
 
