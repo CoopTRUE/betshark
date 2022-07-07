@@ -8,11 +8,11 @@
 
   const getTickets = async(uuid) => {
     const response = await axios.post('http://localhost:2000/api/getTickets', { uuid })
-    tickets.set(response.data.tickets)
+    $tickets = response.data.tickets
   }
 
   onMount(() => {
-    if ($tickets!==null || !$uuid) {
+    if ($tickets!==0 || !$uuid) {
       return
     }
     console.log('getTickets')

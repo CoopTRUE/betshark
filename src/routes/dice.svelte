@@ -1,5 +1,4 @@
 <script>
-  import { web3, address } from '../stores'
   import Login from '../lib/Login.svelte'
   import TicketTicker from '../lib/TicketTicker.svelte'
 

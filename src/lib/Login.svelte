@@ -1,11 +1,11 @@
 <script>
   import { onMount } from 'svelte'
-  import { web3, uuid, address, tickets } from '../stores'
+  import { uuid, address, tickets } from '../stores'
   import { toast } from '@zerodevx/svelte-toast'
   import Web3 from 'web3/dist/web3.min.js'
   import axios from 'axios';
 
-  let provider
+  let provider, web3
   let uuidCookie
   let addressCookie = ''
 
@@ -21,9 +21,7 @@
       })
       return
     }
-    if (!$web3) {
-      web3.set(new Web3(provider, { transactionBlockTimeout: 9999 }))
-    }
+    web3 = new Web3(provider, { transactionBlockTimeout: 9999 })
     try {
       await provider.request({ method: 'eth_requestAccounts' })
     } catch (err) {
@@ -35,7 +33,7 @@
       })
       return
     }
-    address.set(provider.selectedAddress)
+    $address = provider.selectedAddress
   }
 
   const login = async() => {
@@ -52,10 +50,10 @@
         next: 0.33,
     })
 
-    const message = $web3.utils.fromUtf8('Hai I am ' + $address)
+    const message = web3.utils.fromUtf8('Hai I am ' + $address)
     let signature
     try {
-      signature = await($web3.eth.personal.sign(message, $address))
+      signature = await(web3.eth.personal.sign(message, $address))
     } catch (error) {
       toast.set(id, {
         msg: 'EROR: User denied signature!',
@@ -65,6 +63,7 @@
           '--toastBarBackground': '#C53030'
         }
       })
+      return
     }
 
     toast.set(id, {
@@ -78,8 +77,8 @@
         signature: signature
       })
       document.cookie = 'uuid=' + response.data.uuid + ';path=/'
-      uuid.set(response.data.uuid)
-      tickets.set(response.data.tickets)
+      $uuid = response.data.uuid
+      $tickets = response.data.tickets
       document.cookie = 'address=' + $address + ';path=/'
       addressCookie = $address.substring(0, 6) + '...'
       toast.set(id, {
@@ -104,15 +103,15 @@
     uuidCookie = false
     document.cookie = 'address=;path=/'
     addressCookie = ''
-    uuid.set(null)
-    address.set(null)
-    tickets.set(0)
+    $uuid = null
+    $address = null
+    $tickets = 0
   }
 
   onMount(() => {
     if (document.cookie.includes('uuid')) {
       if (!$uuid) {
-        uuid.set(document.cookie.split('uuid=')[1].split(';')[0])
+        $uuid = document.cookie.split('uuid=')[1].split(';')[0]
       }
     } else {
       document.cookie = 'uuid=;path=/'

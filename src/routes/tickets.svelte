@@ -1,7 +1,8 @@
 <script>
+  import { onMount } from 'svelte'
   import { toast } from '@zerodevx/svelte-toast'
   import axios from 'axios'
-  import { web3, address } from '../stores'
+  import { tickets, uuid } from '../stores'
   import Login from '../lib/Login.svelte'
   import TicketTicker from '../lib/TicketTicker.svelte'
   import ABI from '../../constants/abi.json'
@@ -11,7 +12,9 @@
   import usdc from '../assets/crypto/usdc.svg'
   import usdt from '../assets/crypto/usdt.svg'
   import busd from '../assets/crypto/busd.svg'
+  import Web3 from 'web3/dist/web3.min.js'
 
+  let web3
   let ticketCount = 0
   const cryptoTypes = {
     usdc,
@@ -21,22 +24,24 @@
   let cryptoType = ''
 
   const purchase = () => {
-    if (cryptoType==='' || ticketCount===0) return
+    if (!cryptoType || !ticketCount) return
     const id = toast.push('Purchasing...', {
       initial: 0,
       next: 0,
       dismissable: false
     })
-    const contract = new $web3.eth.Contract(ABI, COINS[56][cryptoType])
+    console.log(web3)
+    const contract = new web3.eth.Contract(ABI, COINS[56][cryptoType])
     const sendCoins = contract.methods.transfer(
         SERVER_WALLET,
-        $web3.utils.toWei(
+        web3.utils.toWei(
             ticketCount.toString(),
             CHAINS[56][2]
         )
     )
     sendCoins.send({
-      from: $address,
+      // @ts-ignore
+      from: window.ethereum.selectedAddress,
       value: 0,
       maxPriorityFeePerGas: null,
       maxFeePerGas: null,
@@ -54,20 +59,22 @@
       })
     })
 
-    // axios.get('http://localhost:2000/buyTickets', {
-    //   params: {
-    //     address: $address.get(),
-    //     ticketCount: ticketCount,
-    //     selected: selected
-    //   }
-    // })
-    //   .then(res => {
-    //     console.log(res)
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //   })
+    axios.post('http://localhost:2000/api/buyTickets', {
+      uuid,
+      ticketCount
+    })
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
+
+  onMount(() => {
+    // @ts-ignore
+    web3 = new Web3(window.ethereum, { transactionBlockTimeout: 9999 })
+  })
 </script>
 
 <Login />

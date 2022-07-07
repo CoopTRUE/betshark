@@ -23,7 +23,7 @@ import {
 } from './db.js'
 connect()
 
-app.post('/api/getTickets', async (request, response) => {
+app.post('/api/buyTickets', async (request, response) => {
     const { uuid } = request.body
     if (uuid === undefined || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(uuid)) {
         return response.status(400).send('Invalid address')
