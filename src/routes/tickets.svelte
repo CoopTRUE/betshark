@@ -146,6 +146,12 @@
     .inner {
       width: 50vw;
     }
+    .inner-inner {
+      gap: 30px;
+    }
+    .value-picker {
+      height: 400px !important;
+    }
   }
   .inner-inner{
     display: flex;
@@ -169,9 +175,15 @@
     gap: 15px;
 
   }
-  .value-picker * {
-    cursor: pointer;
+  .value-picker {
     font-size: 80px;
+    min-width: 89px;
+  }
+  .up {
+    cursor: pointer;
+  }
+  .down {
+    cursor: pointer;
   }
   .crypto-type-picker{
     display: flex;
@@ -197,6 +209,7 @@
     font-weight: bold;
     font-size: 20px;
     background-color: #00a8ff;
+    border: 0;
   }
   .grayed {
     opacity: 0.5;
