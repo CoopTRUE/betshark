@@ -135,12 +135,24 @@
     border: 1px solid white;
     border-radius: 5px;
     padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  @media (max-width: 730px) {
+    .content {
+      height: fit-content;
+    }
+    .inner {
+      width: 50vw;
+    }
   }
   .inner-inner{
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 50px;
+    max-width: 100%;
   }
   .value-picker {
     display: flex;
@@ -179,8 +191,8 @@
   }
   .purchase {
     cursor: pointer;
-    width: 400px;
-    height: 40px;
+    /* width: 400px; */
+    padding: 10px 20px;
     border-radius: 50px;
     font-weight: bold;
     font-size: 20px;
