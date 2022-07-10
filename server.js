@@ -25,7 +25,7 @@ connect()
 
 app.post('/api/buyTickets', async (request, response) => {
     const { uuid } = request.body
-    if (uuid === undefined || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(uuid)) {
+    if (uuid === undefined || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(uuid)) {
         return response.status(400).send('Invalid address')
     }
     const account = await findAccount(uuid)
@@ -34,8 +34,19 @@ app.post('/api/buyTickets', async (request, response) => {
     }
     return response.json({ tickets: account.tickets })
 })
-app.get('/api/buyTickets', (request, response) => {
-    return response.send('stop trying to hack me')
+
+app.post('/api/getTickets', async (request, response) => {
+    // doesn't matter if uuid gets leaked in request somehow because cashout only sends money to the address in database
+    const { uuid } = request.body
+    if (uuid === undefined || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(uuid)) {
+        return response.status(400).send('Invalid UUID')
+    }
+
+    const account = await findAccount(uuid)
+    if (account === null) {
+        return response.status(404).send('Account not found')
+    }
+    return response.json({ tickets: account.tickets })
 })
 
 app.post('/api/login', async (request, response) => {
@@ -57,9 +68,6 @@ app.post('/api/login', async (request, response) => {
         return response.json({ uuid })
     }
     return response.json({ uuid: account.uuid, tickets: account.tickets })
-})
-app.get('/api/login', (request, response) => {
-    return response.send('stop trying to hack me')
 })
 
 app.get('*', (request, response) => {
