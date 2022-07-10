@@ -89,6 +89,7 @@
   onMount(async() => {
     if (document.cookie.includes('uuid')) {
       uuidCookie = !!document.cookie.split('uuid=')[1].split(';')[0]
+      if (uuidCookie) $uuid=document.cookie.split('uuid=')[1].split(';')[0]
     } else {
       document.cookie = 'uuid=;path=/'
     }
