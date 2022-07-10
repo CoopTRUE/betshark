@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte'
-  import { uuid, tickets } from '../stores'
+  import { uuid, tickets, ready } from '../stores'
   import { toast } from '@zerodevx/svelte-toast'
   import Web3 from 'web3/dist/web3.min.js'
   import axios from 'axios';
@@ -64,6 +64,7 @@
       document.cookie = `uuid=${response.data.uuid};path=/;expires=${expires.toUTCString()}`
       $uuid = response.data.uuid
       $tickets = response.data.tickets
+      $ready = true
       toast.set(id, {
         msg: 'Success!',
         next: 1,
@@ -96,14 +97,20 @@
     // @ts-ignore
     provider = window.ethereum
     if (provider) {
-      // signed in on uuid but not on metamask
-      if (uuidCookie && !provider.selectedAddress) {
-        // give user a second chance to sign in
-        console.log('EHKJSJFJHKSKDJF')
-        await connectMetamask()
-        if (!provider.selectedAddress) {
-          toast.push('Logged in but metamask not connected! Logging out...', { classes: ['warning'] })
-          logout()
+      // signed in
+      if (uuidCookie) {
+        if (provider.selectedAddress) {
+          $ready = true
+        }
+        // signed in but not connected to metamask
+        else {
+          // give user a second chance to sign in
+          console.log('EHKJSJFJHKSKDJF')
+          await connectMetamask()
+          if (!provider.selectedAddress) {
+            toast.push('Logged in but metamask not connected! Logging out...', { classes: ['warning'] })
+            logout()
+          }
         }
       }
       // sign out automatically on account change

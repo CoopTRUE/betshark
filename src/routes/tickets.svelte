@@ -1,8 +1,21 @@
+<script context="module">
+  import { writable } from 'svelte/store'
+  const cryptoTypes = {
+    usdc,
+    usdt,
+    busd
+  }
+  // @ts-ignore
+  const provider = window.ethereum
+  const ticketCount = writable(0)
+  const cryptoType = writable('')
+</script>
+
 <script>
   import { onMount } from 'svelte'
   import { toast } from '@zerodevx/svelte-toast'
   import axios from 'axios'
-  import { tickets, uuid } from '../stores'
+  import { tickets, uuid, ready } from '../stores'
   import Login from '../lib/Login.svelte'
   import TicketTicker from '../lib/TicketTicker.svelte'
   import ABI from '../../constants/abi.json'
@@ -14,36 +27,12 @@
   import busd from '../assets/crypto/busd.svg'
   import Web3 from 'web3/dist/web3.min.js'
 
-  let provider
-  let ticketCount = 0
-  const cryptoTypes = {
-    usdc,
-    usdt,
-    busd
-  }
-  let cryptoType = ''
-
+  console.log($ready)
   const purchase = async() => {
-    if (!cryptoType || !ticketCount) return
-    if (!$uuid) {
-      toast.push('Please login first!', {
-        theme: {
-          '--toastBackground': '#F56565',
-          '--toastBarBackground': '#C53030'
-        }
-      })
-      return
+    if (!$cryptoType || !$ticketCount) return
+    if (!$ready) {
+      return toast.push('Please login first!', { classes: ['error'] })
     }
-    if (!provider) {
-      toast.push('Please install web3 wallet!', {
-        theme: {
-          '--toastBackground': '#F56565',
-          '--toastBarBackground': '#C53030'
-        }
-      })
-      return
-    }
-
     const web3 = new Web3(provider, { transactionBlockTimeout: 9999 })
     const id = toast.push('Purchasing...', {
       initial: 0,
@@ -51,18 +40,17 @@
       dismissable: false
     })
 
-    const contract = new web3.eth.Contract(ABI, COINS[56][cryptoType])
+    const contract = new web3.eth.Contract(ABI, COINS[56][$cryptoType])
     const sendCoins = contract.methods.transfer(
         SERVER_WALLET,
         web3.utils.toWei(
-            ticketCount.toString(),
+            $ticketCount.toString(),
             CHAINS[56][2]
         )
     )
 
-    let txn
     try {
-      txn = await sendCoins.send({
+      var txn = await sendCoins.send({
         from: provider.selectedAddress,
         value: 0,
         maxPriorityFeePerGas: null,
@@ -83,10 +71,11 @@
 
     axios.post('http://localhost:2000/api/buyTickets', {
       uuid,
-      ticketCount
+      txn,
     })
       .then(res => {
-        console.log(res)
+        // $tickets +
+        console.log(res.data)
       })
       .catch(err => {
         console.log(err)
@@ -94,8 +83,7 @@
   }
 
   onMount(() => {
-    // @ts-ignore
-    provider = window.ethereum
+
   })
 </script>
 
@@ -105,9 +93,9 @@
   <div class="inner">
     <div class="inner-inner">
       <div class="value-picker">
-        <div class="up" on:click={()=>{ticketCount += 5}}>▲</div>
-        <div class="value-number">{ticketCount}🎟️</div>
-        <div class="down" on:click={()=>{ticketCount = Math.max(ticketCount-5, 0)}}>▼</div>
+        <div class="up" on:click={()=>{$ticketCount += 5}}>▲</div>
+        <div class="value-number">{$ticketCount}🎟️</div>
+        <div class="down" on:click={()=>{$ticketCount = Math.max($ticketCount-5, 0)}}>▼</div>
       </div>
       <div class="crypto-type-picker">
         {#each Object.entries(cryptoTypes) as [cryptoName, cryptoImage], index}
@@ -115,16 +103,20 @@
             src={cryptoImage}
             alt={cryptoName+" stablecoin"}
             class="crypto-type {cryptoName}"
-            class:selected={cryptoType === cryptoName}
-            on:click={()=>{cryptoType = cryptoName}}
+            class:selected={$cryptoType === cryptoName}
+            on:click={()=>{$cryptoType = cryptoName}}
           >
         {/each}
       </div>
     </div>
-    <button class="purchase" class:grayed={cryptoType==='' || ticketCount===0} on:click={purchase}>
-      PURCHASE {ticketCount} TICKETS
-      {#if cryptoType !== ''}
-        IN {cryptoType.toUpperCase()}
+    <button
+      class="purchase"
+      class:grayed={!$cryptoType || !$ticketCount || !$ready}
+      on:click={purchase}
+    >
+      PURCHASE {$ticketCount} TICKETS
+      {#if $cryptoType !== ''}
+        IN {$cryptoType.toUpperCase()}
       {/if}
     </button>
   </div>
