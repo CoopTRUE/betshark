@@ -6,44 +6,31 @@
   import axios from 'axios';
 
   let provider, web3
-  let uuidCookie
-  let address = ''
+  let uuidCookie = false
 
   const connectMetamask = async() => {
     // @ts-ignore
     if (!provider) {
-      toast.push('Please install web3 wallet!', {
-        theme: {
-          '--toastBackground': '#F56565',
-          '--toastBarBackground': '#C53030'
-        }
-      })
-      return
+      return toast.push('Please install a web3 wallet!', { classes: ['error'] })
     }
+
     web3 = new Web3(provider, { transactionBlockTimeout: 9999 })
     try {
       await provider.request({ method: 'eth_requestAccounts' })
     } catch (err) {
-      toast.push('ERROR: User closed metamask!', {
-        theme: {
-          '--toastBackground': '#F56565',
-          '--toastBarBackground': '#C53030'
-        }
-      })
-      return
+      return toast.push('ERROR: User closed metamask!', { classes: ['error'] })
     }
-    address = provider.selectedAddress
   }
 
   const login = async() => {
     await connectMetamask()
+    const address = provider.selectedAddress
     if (!address) return
+
     const id = toast.push('Waiting for user to sign...', {
       initial: 0,
-      next: 0,
       dismissable: false
     })
-
     toast.set(id, {
         msg: 'Waiting for signature confirmation...',
         next: 0.33,
@@ -54,22 +41,17 @@
     try {
       signature = await(web3.eth.personal.sign(message, address))
     } catch (error) {
-      toast.set(id, {
+      return toast.set(id, {
         msg: 'EROR: User denied signature!',
         next: 1,
-        theme: {
-          '--toastBackground': '#F56565',
-          '--toastBarBackground': '#C53030'
-        }
+        classes: ['error']
       })
-      return
     }
 
     toast.set(id, {
         msg: 'Waiting for server confirmation...',
         next: 0.55,
     })
-
     try {
       const response = await axios.post('http://localhost:2000/api/login', {
         address: address,
@@ -81,16 +63,14 @@
       toast.set(id, {
         msg: 'Success!',
         next: 1,
+        classes: ['success']
       })
       uuidCookie = true
     } catch (error) {
       toast.set(id, {
         msg: 'EROR: Unknown server error!',
         next: 1,
-        theme: {
-          '--toastBackground': '#F56565',
-          '--toastBarBackground': '#C53030'
-        }
+        classes: ['error']
       })
     }
   }
@@ -102,27 +82,36 @@
     $tickets = 0
   }
 
-  onMount(() => {
+  onMount(async() => {
     if (document.cookie.includes('uuid')) {
       uuidCookie = !!document.cookie.split('uuid=')[1].split(';')[0]
     } else {
       document.cookie = 'uuid=;path=/'
-      uuidCookie = false
     }
     // @ts-ignore
     provider = window.ethereum
-    provider?.on('accountsChanged', () => {
-      if (!uuidCookie) return
-      toast.push('ERROR: Metamask account doesn\'t match server account', {
-        theme: {
-          '--toastBackground': '#F56565',
-          '--toastBarBackground': '#C53030'
+    if (provider) {
+      // signed in on uuid but not on metamask
+      if (uuidCookie && !provider.selectedAddress) {
+        // give user a second chance to sign in
+        console.log('EHKJSJFJHKSKDJF')
+        await connectMetamask()
+        if (!provider.selectedAddress) {
+          toast.push('Logged in but metamask not connected! Logging out...', { classes: ['warning'] })
+          logout()
+        }
+      }
+      // sign out automatically on account change
+      provider?.on('accountsChanged', () => {
+        if (uuidCookie) {
+          toast.push('ERROR: Metamask account doesn\'t match server account!', { classes: ['error'] })
+          logout()
         }
       })
-      logout()
-    })
+    } else {
+      toast.push('Please install web3 wallet!', { classes: ['error'] })
+    }
   })
-
 </script>
 
 <div class="button-container">
