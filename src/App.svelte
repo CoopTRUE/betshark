@@ -8,6 +8,7 @@
   import Coinflip from './routes/coinflip.svelte'
   import Slots from './routes/slots.svelte'
   import Tickets from './routes/tickets.svelte'
+  import ErrorPage from './routes/error.svelte'
 </script>
 
 <Navbar />
@@ -17,6 +18,7 @@
   <Route path='/dice'><Dice /></Route>
   <Route path='/coinflip'><Coinflip /></Route>
   <Route path='/tickets'><Tickets /></Route>
+  <Route path='*'><ErrorPage /></Route>
 </Router>
 <Footer />
 <SvelteToast />
