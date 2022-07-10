@@ -57,7 +57,11 @@
         address: address,
         signature: signature
       })
-      document.cookie = 'uuid=' + response.data.uuid + ';path=/'
+
+      const today = new Date()
+      // 7 day cookie expiration
+      const expires = new Date(today.getTime() + 7*24*60*60*1000)
+      document.cookie = `uuid=${response.data.uuid};path=/;expires=${expires.toUTCString()}`
       $uuid = response.data.uuid
       $tickets = response.data.tickets
       toast.set(id, {
