@@ -18,7 +18,6 @@
     web3 = new Web3(provider, { transactionBlockTimeout: 9999 })
     try {
       await provider.request({ method: 'eth_requestAccounts' })
-      console.log(provider.selectedAddress)
     } catch (err) {
       return toast.push('ERROR: User closed metamask!', { classes: ['error'] })
     }
@@ -32,7 +31,6 @@
       return false
     }
     $chainId = walletChainId
-    console.log($chainId)
     return true
   }
 

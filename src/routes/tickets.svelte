@@ -28,7 +28,6 @@
   import busd from '../assets/crypto/busd.svg'
   import Web3 from 'web3/dist/web3.min.js'
 
-  console.log($ready)
   const purchase = async() => {
     if (!$cryptoType || !$ticketCount) return
     if (!$ready) {
@@ -49,9 +48,9 @@
         )
     )
 
-    let txn
+    let transaction
     try {
-      txn = await sendCoins.send({
+      transaction = await sendCoins.send({
         from: provider.selectedAddress,
         value: 0,
         maxPriorityFeePerGas: null,
@@ -61,27 +60,31 @@
       toast.set(id, {
         msg: 'Error: ' + (err.code===4001 ? 'User denied transaction!' : 'UNKNOWN ERROR'),
         next: 1,
-        theme: {
-          '--toastBackground': '#F56565',
-          '--toastBarBackground': '#C53030'
-        }
+        classes: ['error']
       })
     }
 
-    console.log(txn)
+    console.log(transaction)
 
-    axios.post('http://localhost:2000/api/buyTickets', {
-      chainId: $chainId,
-      uuid: $uuid,
-      txn
-    })
-      .then(res => {
-        // $tickets +
-        console.log(res.data)
+    try {
+      const response = await axios.post('http://localhost:2000/api/buyTickets', {
+        chainId: $chainId,
+        uuid: $uuid,
+        transactionHash: transaction['transactionHash']
       })
-      .catch(err => {
-        console.log(err)
+      $tickets = response.data.tickets
+      toast.set(id, {
+        msg: 'Success!',
+        next: 1,
+        classes: ['success']
       })
+    } catch (error) {
+      toast.set(id, {
+        msg: 'Error: Unknown server error!',
+        next: 1,
+        classes: ['error']
+      })
+    }
   }
 
   onMount(() => {

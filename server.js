@@ -27,7 +27,7 @@ import CHAINS from './constants/chains.js'
 import COINS from './constants/coins.js'
 import ABI from './constants/abi.json'
 import Web3 from 'web3'
-import abiDecoderModule from 'abi-decoder'
+import abiDecoder from 'abi-decoder'
 
 // create web3 instances prematurely to avoid slowdown on individual requests
 const web3Instances = {}
@@ -67,8 +67,9 @@ app.post('/api/buyTickets', async (req, res) => {
     if (!Object.values(COINS[chainId]).includes(contract_address)) {
         return res.status(404).send('Transaction hash doesn\'t interact with a valid contract')
     }
-    const abiDecoder = abiDecoderModule.addABI(ABI)
+    abiDecoder.addABI(ABI)
     const transactionParams = abiDecoder.decodeMethod(transaction.input).params
+    console.log(transactionParams)
     if (transactionParams[0].value !== SERVER_WALLET) {
         return res.status(404).send('Transaction is not to the server wallet')
     }
@@ -78,7 +79,7 @@ app.post('/api/buyTickets', async (req, res) => {
     }
 
     await addTickets(uuid, value)
-    return res.json({ tickets: value })
+    return res.json({ tickets: account.tickets+value })
 })
 
 app.post('/api/getTickets', async (req, res) => {
