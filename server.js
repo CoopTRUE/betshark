@@ -37,7 +37,6 @@ for (const [id, chainData] of Object.entries(CHAINS)) {
 
 app.post('/api/buyTickets', async (req, res) => {
     const { chainId, uuid, transactionHash } = req.body
-    console.log(chainId, uuid, transactionHash)
     if (!(chainId in CHAINS)) {
         return res.status(400).send('Invalid chainId')
     }
