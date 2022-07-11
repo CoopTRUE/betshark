@@ -1,5 +1,6 @@
 import { mongoose } from 'mongoose'
 import Account from './models/Account.js'
+import TicketTransaction from './models/TicketTransaction.js'
 
 export async function connect() {
   console.log('Connecting to betshark database...')
@@ -38,4 +39,14 @@ export async function removeTickets(sigOrUUID, tickets) {
   }
   account.tickets -= tickets
   await account.save()
+}
+
+export async function getTicketTransactions() {
+  const transactions = await TicketTransaction.find()
+  return transactions.map(transaction => transaction.hash)
+}
+
+export async function addTicketTransaction(hash) {
+  const transaction = new TicketTransaction({ hash })
+  await transaction.save()
 }

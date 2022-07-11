@@ -7,6 +7,7 @@
   }
   // @ts-ignore
   const provider = window.ethereum
+  const web3 = new Web3(provider, { transactionBlockTimeout: 9999 })
   const ticketCount = writable(0)
   const cryptoType = writable('')
 </script>
@@ -15,7 +16,7 @@
   import { onMount } from 'svelte'
   import { toast } from '@zerodevx/svelte-toast'
   import axios from 'axios'
-  import { tickets, uuid, ready } from '../stores'
+  import { chainId, tickets, uuid, ready } from '../stores'
   import Login from '../lib/Login.svelte'
   import TicketTicker from '../lib/TicketTicker.svelte'
   import ABI from '../../constants/abi.json'
@@ -33,24 +34,24 @@
     if (!$ready) {
       return toast.push('Please login first!', { classes: ['error'] })
     }
-    const web3 = new Web3(provider, { transactionBlockTimeout: 9999 })
     const id = toast.push('Purchasing...', {
       initial: 0,
       next: 0,
       dismissable: false
     })
 
-    const contract = new web3.eth.Contract(ABI, COINS[56][$cryptoType])
+    const contract = new web3.eth.Contract(ABI, COINS[$chainId][$cryptoType])
     const sendCoins = contract.methods.transfer(
         SERVER_WALLET,
         web3.utils.toWei(
             $ticketCount.toString(),
-            CHAINS[56][2]
+            CHAINS[$chainId][2]
         )
     )
 
+    let txn
     try {
-      var txn = await sendCoins.send({
+      txn = await sendCoins.send({
         from: provider.selectedAddress,
         value: 0,
         maxPriorityFeePerGas: null,
@@ -70,8 +71,9 @@
     console.log(txn)
 
     axios.post('http://localhost:2000/api/buyTickets', {
-      uuid,
-      txn,
+      chainId: $chainId,
+      uuid: $uuid,
+      txn
     })
       .then(res => {
         // $tickets +
