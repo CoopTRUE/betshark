@@ -30,6 +30,7 @@ export async function addTickets(sigOrUUID, tickets) {
   }
   account.tickets += tickets
   await account.save()
+  return account.tickets
 }
 
 export async function removeTickets(sigOrUUID, tickets) {
@@ -39,6 +40,7 @@ export async function removeTickets(sigOrUUID, tickets) {
   }
   account.tickets -= tickets
   await account.save()
+  return account.tickets
 }
 
 export async function getTicketTransactions() {

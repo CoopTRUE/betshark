@@ -1,22 +1,38 @@
-<!-- <script>
-import axios from 'axios';
+<script>
+  import { uuid } from '../stores'
+  import axios from 'axios'
+  import { toast } from '@zerodevx/svelte-toast'
 
-  import { web3, address, tickets } from '../stores'
 
-  export let cost = 100000
-  export let text = 'Play'
+  export let game = ''
+  export let cost = 0
+  export let click = (..._)=>{}
 
-  const play = () => {
-    axios.get('http://localhost:2000/play/' + address.value)
-      .then(res => {
-        console.log(res)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+  const play = async() => {
+    axios.post('http://localhost:2000/api/play', {
+      uuid: $uuid,
+      game: game,
+    })
+    .then(response => {
+      click(response.data)
+    })
+    .catch(error => {
+      console.log(error)
+    })
   }
 </script>
 
-<div>
-  <button on:click={play}>{text}</button>
-</div> -->
+<div class="main">
+  <button on:click={play}>
+    <slot />
+  </button>
+  <div>Costs {cost}</div>
+</div>
+
+<style>
+  .main {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+  }
+</style>
