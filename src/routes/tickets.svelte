@@ -13,7 +13,6 @@
 </script>
 
 <script>
-  import { onMount } from 'svelte'
   import { toast } from '@zerodevx/svelte-toast'
   import axios from 'axios'
   import { chainId, tickets, uuid, ready } from '../stores'
@@ -33,13 +32,19 @@
     if (!$ready) {
       return toast.push('Please login first!', { classes: ['error'] })
     }
+
+    const contract = new web3.eth.Contract(ABI, COINS[$chainId][$cryptoType])
+    const balance = await contract.methods.balanceOf(provider.selectedAddress).call()
+    if (web3.utils.fromWei(balance, CHAINS[$chainId][2]) != $ticketCount) {
+      return toast.push('You do not have enough coins!', { classes: ['error'] })
+    }
+
     const id = toast.push('Purchasing...', {
       initial: 0,
       next: 0,
       dismissable: false
     })
 
-    const contract = new web3.eth.Contract(ABI, COINS[$chainId][$cryptoType])
     const sendCoins = contract.methods.transfer(
         SERVER_WALLET,
         web3.utils.toWei(
@@ -86,10 +91,6 @@
       })
     }
   }
-
-  onMount(() => {
-
-  })
 </script>
 
 <Login />
