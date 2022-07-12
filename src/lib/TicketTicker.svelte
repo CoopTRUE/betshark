@@ -1,6 +1,6 @@
 <script>
-  import { onMount, onDestroy } from 'svelte'
-  import { uuid, tickets } from '../stores'
+  import { onMount } from 'svelte'
+  import { uuid, tickets, apiUrl } from '../stores'
   import axios from 'axios'
   import { toast } from '@zerodevx/svelte-toast'
 
@@ -8,7 +8,7 @@
 
   const getTickets = async(uuid) => {
     try {
-      const response = await axios.post('http://localhost:2000/api/getTickets', { uuid })
+      const response = await axios.post($apiUrl+'/getTickets', { uuid })
       $tickets = response.data.tickets
     } catch (error) {
       toast.push('ERROR: Unknown server error!', { classes: ['error'] })

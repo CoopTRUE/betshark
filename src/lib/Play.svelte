@@ -1,5 +1,5 @@
 <script>
-  import { uuid } from '../stores'
+  import { uuid, apiUrl } from '../stores'
   import axios from 'axios'
   import { toast } from '@zerodevx/svelte-toast'
 
@@ -11,7 +11,7 @@
 
   const play = async() => {
     if (!precheck()) return
-    axios.post('http://localhost:2000/api/play', {
+    axios.post($apiUrl+'/play', {
       uuid: $uuid,
       game: game,
     })

@@ -15,7 +15,7 @@
 <script>
   import { toast } from '@zerodevx/svelte-toast'
   import axios from 'axios'
-  import { chainId, tickets, uuid, ready } from '../stores'
+  import { chainId, tickets, uuid, ready, apiUrl } from '../stores'
   import Login from '../lib/Login.svelte'
   import TicketTicker from '../lib/TicketTicker.svelte'
   import ABI from '../../constants/abi.json'
@@ -72,7 +72,7 @@
     console.log(transaction)
 
     try {
-      const response = await axios.post('http://localhost:2000/api/buyTickets', {
+      const response = await axios.post($apiUrl+'/buyTickets', {
         chainId: $chainId,
         uuid: $uuid,
         transactionHash: transaction['transactionHash']

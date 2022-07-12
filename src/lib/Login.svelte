@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte'
-  import { chainId, uuid, tickets, ready } from '../stores'
+  import { chainId, uuid, tickets, ready, apiUrl } from '../stores'
   import { toast } from '@zerodevx/svelte-toast'
   import Web3 from 'web3/dist/web3.min.js'
   import axios from 'axios'
@@ -66,7 +66,7 @@
         next: 0.55,
     })
     try {
-      const response = await axios.post('http://localhost:2000/api/login', {
+      const response = await axios.post($apiUrl+'/login', {
         chainId: $chainId,
         address,
         signature
