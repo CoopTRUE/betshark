@@ -35,7 +35,7 @@
 
     const contract = new web3.eth.Contract(ABI, COINS[$chainId][$cryptoType])
     const balance = await contract.methods.balanceOf(provider.selectedAddress).call()
-    if (web3.utils.fromWei(balance, CHAINS[$chainId][2]) != $ticketCount) {
+    if (web3.utils.fromWei(balance, CHAINS[$chainId][2]) < $ticketCount) {
       return toast.push('You do not have enough coins!', { classes: ['error'] })
     }
 

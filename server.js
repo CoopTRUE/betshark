@@ -132,10 +132,13 @@ app.post('/api/play', async (req, res) => {
 
   switch (game) {
     case 'coinflip':
-      const win = Math.random() < 0.45
+      if (account.tickets < 5) {
+        return res.status(404).send('Not enough tickets')
+      }
+      const win = Math.random() < 0.5
       return res.json({
         win,
-        tickets: win ? await addTickets(uuid, 5) : await removeTickets(uuid, 5)
+        tickets: win ? await addTickets(uuid, 4) : await removeTickets(uuid, 5)
       })
     default:
       return res.status(400).send('Invalid game')

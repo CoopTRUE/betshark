@@ -7,8 +7,10 @@
   export let game = ''
   export let cost = 0
   export let click = (..._)=>{}
+  export let precheck = ()=>true
 
   const play = async() => {
+    if (!precheck()) return
     axios.post('http://localhost:2000/api/play', {
       uuid: $uuid,
       game: game,
@@ -26,7 +28,7 @@
   <button on:click={play}>
     <slot />
   </button>
-  <div>Costs {cost}</div>
+  <div>Costs {cost}🎟️</div>
 </div>
 
 <style>

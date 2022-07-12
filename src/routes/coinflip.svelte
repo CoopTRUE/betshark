@@ -8,43 +8,50 @@
   import tailsImg from '../assets/coinflip/tails.png'
   import { toast } from '@zerodevx/svelte-toast'
 
+  const cost = 5
   let flipSide
   let selected = 'heads'
   let spinning = false
 
   const flip = data => {
-    console.log('asdff')
-    spinning = true
+    flipSide = ''
     if (data.win) {
       flipSide = selected
       setTimeout(() => {
         toast.push('You won!', { classes: ['success'] })
-        $tickets = data.tickets
-      }, 4000)
+      }, 4300)
     } else {
       flipSide = selected=='heads' ? 'tails' : 'heads'
       setTimeout(() => {
         toast.push('You lost!', { classes: ['error'] })
-        $tickets = data.tickets
-      }, 4000)
+      }, 4300)
     }
 
     setTimeout(() => {
+      $tickets = data.tickets
       flipSide=''
       spinning = false
-    }, 6000)
+    }, 4300)
   }
   const handleClick = () => {
     if (spinning) return
     flipSide=''
     selected = selected=='heads' ? 'tails' : 'heads'
   }
+
+  const precheck = () => {
+    if (spinning) return
+    if ($tickets<5) {
+      toast.push('You need at least 5 tickets to play!', { classes: ['error'] })
+      return false
+    }
+    return spinning = true
+  }
 </script>
 
 <Login />
 <TicketTicker />
 <div class="content">
-  <h3>Selected: {selected}</h3>
   <div
     on:click={handleClick}
     class="coin"
@@ -60,9 +67,10 @@
       <img src={tailsImg} alt="">
     </div>
   </div>
-  <Play game="coinflip" cost={5} click={flip}>
+  <Play game="coinflip" cost={cost} click={flip} precheck={precheck}>
     Flip!
   </Play>
+  <h5>50% win 5% house edge rounded</h5>
 </div>
 
 <style>
