@@ -136,8 +136,11 @@ app.post('/api/play', async (req, res) => {
   if (account === null) {
     return res.status(404).send('Account not found')
   }
-
   const gameInfo = GAMES[game]
+  if (account.tickets < gameInfo.tickets) {
+    return res.status(404).send('Not enough tickets')
+  }
+
   const win = Math.random() < gameInfo.odds
   const prize = Math.floor(
     (gameInfo.times ? gameInfo.cost*gameInfo.times : gameInfo.cost)
