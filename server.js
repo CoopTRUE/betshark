@@ -24,6 +24,7 @@ import {
 } from './db.js'
 connect()
 
+import GAMES from './constants/games.js'
 import SERVER_WALLET from './constants/serverwallet.js'
 import CHAINS from './constants/chains.js'
 import COINS from './constants/coins.js'
@@ -127,24 +128,19 @@ app.post('/api/play', async (req, res) => {
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(uuid)) {
     return res.status(400).send('Invalid UUID')
   }
+  if (!(game in GAMES)) {
+    return res.status(400).send('Invalid game')
+  }
   const account = await findAccount(uuid)
   if (account === null) {
     return res.status(404).send('Account not found')
   }
 
-  switch (game) {
-    case 'coinflip':
-      if (account.tickets < 5) {
-        return res.status(404).send('Not enough tickets')
-      }
-      const win = Math.random() < 0.5
-      return res.json({
-        win,
-        tickets: win ? await addTickets(uuid, 4) : await removeTickets(uuid, 5)
-      })
-    default:
-      return res.status(400).send('Invalid game')
-  }
+  const win = Math.random() < GAMES[game].winChance
+  return res.json({
+    win,
+    tickets: win ? await addTickets(uuid, GAMES[game].cost) : await removeTickets(uuid, GAMES[game].cost)
+  })
 })
 
 app.get('*', (request, response) => {

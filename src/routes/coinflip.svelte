@@ -8,7 +8,6 @@
   import tailsImg from '../assets/coinflip/tails.png'
   import { toast } from '@zerodevx/svelte-toast'
 
-  const cost = 5
   let flipSide
   let selected = 'heads'
   let spinning = false
@@ -41,10 +40,6 @@
 
   const precheck = () => {
     if (spinning) return
-    if ($tickets<5) {
-      toast.push('You need at least 5 tickets to play!', { classes: ['error'] })
-      return false
-    }
     return spinning = true
   }
 </script>
@@ -67,7 +62,7 @@
       <img src={tailsImg} alt="">
     </div>
   </div>
-  <Play game="coinflip" cost={cost} click={flip} precheck={precheck}>
+  <Play game="coinflip" click={flip} precheck={precheck} onfail={()=>spinning=false}>
     Flip!
   </Play>
   <h5>50% win 5% house edge rounded</h5>

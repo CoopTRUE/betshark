@@ -1,9 +1,13 @@
 <script>
   import Login from '../lib/Login.svelte'
   import TicketTicker from '../lib/TicketTicker.svelte'
+  import Play from '../lib/Play.svelte'
+  import { tickets } from '../stores'
+  import { toast } from '@zerodevx/svelte-toast'
 
   let diceOne, diceTwo;
   let selector1, selector2
+  const cost = 3
 
   function rollDice() {
     diceOne = Math.floor(Math.random() * 6 + 1);
@@ -122,6 +126,7 @@
     </div>
 
   </div>
+  <Play game="dice" click={rollDice}>Roll!</Play>
 </div>
 
 <style>
