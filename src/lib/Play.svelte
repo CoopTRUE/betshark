@@ -2,7 +2,7 @@
   import { uuid, tickets, apiUrl } from '../stores'
   import axios from 'axios'
   import { toast } from '@zerodevx/svelte-toast'
-  import GAMES from '../../constants/GAMES'
+  import GAMES from '../../constants/games'
 
   export let game = ''
   export let click = (..._)=>{}
