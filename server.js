@@ -123,6 +123,7 @@ app.post('/api/login', async (req, res) => {
   return res.json({ uuid: account.uuid, tickets: account.tickets })
 })
 
+// let tickets = 100  // temporary tickets variable for testing odds
 app.post('/api/play', async (req, res) => {
   const { uuid, game } = req.body
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(uuid)) {
@@ -136,10 +137,17 @@ app.post('/api/play', async (req, res) => {
     return res.status(404).send('Account not found')
   }
 
-  const win = Math.random() < GAMES[game].winChance
+  const gameInfo = GAMES[game]
+  const win = Math.random() < gameInfo.odds
+  const prize = Math.floor(
+    (gameInfo.times ? gameInfo.cost*gameInfo.times : gameInfo.cost)
+    * (1 - gameInfo.edge)
+  )
+  console.log(win, prize)
   return res.json({
     win,
-    tickets: win ? await addTickets(uuid, GAMES[game].cost) : await removeTickets(uuid, GAMES[game].cost)
+    tickets: win ? await addTickets(uuid, prize) : await removeTickets(uuid, GAMES[game].cost)
+    // tickets: win ? tickets+=prize : tickets-=GAMES[game].cost
   })
 })
 
