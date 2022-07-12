@@ -45,7 +45,7 @@
 <div class="content">
   <button on:click={cashout}>Request Cashout</button>
   <h3>
-    Click request cashout to request a cashout of your current tickets into busd
+    Click <span>request cashout</span> to request a cashout of your current tickets into busd
   </h3>
 </div>
 
@@ -58,10 +58,13 @@
     padding: 10px;
     font-weight: bold;
     cursor: pointer;
-    animation: green 4s ease-in-out infinite;
+    animation: greenBtn 4s ease-in-out infinite;
+  }
+  span {
+    animation: greenText 4s ease-in-out infinite;
   }
 
-  @keyframes green {
+  @keyframes greenBtn {
     0% {
       background-color: #a1ffa1;
     }
@@ -70,6 +73,17 @@
     }
     100% {
       background-color: #a1ffa1;
+    }
+  }
+  @keyframes greenText {
+    0% {
+      color: #a1ffa1;
+    }
+    50% {
+      color: #00ff00;
+    }
+    100% {
+      color: #a1ffa1;
     }
   }
 </style>

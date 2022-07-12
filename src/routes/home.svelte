@@ -98,7 +98,7 @@
   </h1>
   <Router>
   <h2 class="welcome-subtext">
-    Pick a game from the navagation bar to start playing or
+    Buy tickets and pick a game from the navagation bar to start playing or
     <a href={randomPage()} class="surprise" use:link>
       <span>s</span><span>u</span><span>r</span><span>p</span><span>r</span><span>i</span><span>s</span><span>e</span>
       me

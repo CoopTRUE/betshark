@@ -137,7 +137,7 @@
     flex-direction: column;
     align-items: center;
   }
-  @media (max-width: 730px) {
+  @media (max-width: 910px) {
     .content {
       height: fit-content;
     }

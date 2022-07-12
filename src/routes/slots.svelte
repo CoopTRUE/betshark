@@ -68,6 +68,7 @@
 <Login />
 <TicketTicker />
 <div class="content">
+  <h1>THIS GAME IS IN DEVELOPMENT</h1>
   <div class="doors">
     {#each Array(3) as _, index}
       <div class="door">

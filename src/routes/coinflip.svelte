@@ -46,9 +46,6 @@
 <Login />
 <TicketTicker />
 <div class="content">
-  {#if !$clickedBefore}
-    <div>Click coin to change bet side</div>
-  {/if}
   <div
     on:click={handleFlip}
     class="coin"
@@ -67,6 +64,7 @@
   <Play game="coinflip" click={flip} precheck={precheck} onfail={()=>spinning=false} time={4300}>
     Flip!
   </Play>
+  <div>Click the coin to change which side you are betting on</div>
 </div>
 
 <style>
