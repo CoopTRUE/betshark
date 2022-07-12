@@ -1,3 +1,8 @@
+<script context="module">
+  import { writable } from 'svelte/store'
+  const clickedBefore = writable(false)
+</script>
+
 <script>
   import { onMount } from 'svelte'
   import { tickets } from '../stores'
@@ -16,30 +21,24 @@
     flipSide = ''
     if (data.win) {
       flipSide = selected
-      setTimeout(() => {
-        toast.push('You won!', { classes: ['success'] })
-      }, 4300)
     } else {
       flipSide = selected=='heads' ? 'tails' : 'heads'
-      setTimeout(() => {
-        toast.push('You lost!', { classes: ['error'] })
-      }, 4300)
     }
 
     setTimeout(() => {
-      $tickets = data.tickets
       flipSide=''
       spinning = false
     }, 4300)
   }
-  const handleClick = () => {
+  const handleFlip = () => {
     if (spinning) return
+    $clickedBefore = true
     flipSide=''
     selected = selected=='heads' ? 'tails' : 'heads'
   }
 
   const precheck = () => {
-    if (spinning) return
+    // if (spinning) return
     return spinning = true
   }
 </script>
@@ -47,8 +46,11 @@
 <Login />
 <TicketTicker />
 <div class="content">
+  {#if !$clickedBefore}
+    <div>Click coin to change bet side</div>
+  {/if}
   <div
-    on:click={handleClick}
+    on:click={handleFlip}
     class="coin"
     class:heads={flipSide=='heads'}
     class:tails={flipSide=='tails'}
@@ -62,16 +64,16 @@
       <img src={tailsImg} alt="">
     </div>
   </div>
-  <Play game="coinflip" click={flip} precheck={precheck} onfail={()=>spinning=false}>
+  <Play game="coinflip" click={flip} precheck={precheck} onfail={()=>spinning=false} time={4300}>
     Flip!
   </Play>
-  <h5>50% win 5% house edge rounded</h5>
 </div>
 
 <style>
   .coin {
     width: 200px;
     height: 200px;
+    cursor: pointer;
   }
   .coin div {
     width: 100%;
@@ -86,12 +88,13 @@
   img {
     width: 100%;
     height: 100%;
+    filter: drop-shadow(0 0 11px #0066ff);
   }
   .heads-side {
-    background-color: #bb0000;
+    background-color: black;
   }
   .tails-side {
-    background-color: #3e3e3e;
+    background-color: whitesmoke;
   }
 
   .coin {

@@ -7,129 +7,131 @@
 
   let diceOne, diceTwo;
   let selector1, selector2
-  const cost = 3
 
-  function rollDice() {
-    diceOne = Math.floor(Math.random() * 6 + 1);
-    diceTwo = Math.floor(Math.random() * 6 + 1);
+  const getRoll = not => {
+    let temp = Math.floor(Math.random() * 6) + 1
+    while (not.includes(temp)) {
+      temp = Math.floor(Math.random() * 6) + 1
+    }
+    return temp
+  }
 
-    console.log(selector1 == diceOne && selector2 == diceTwo);
+  function rollDice(data) {
+    if (data.win) {
+      diceOne = getRoll([diceOne, diceTwo])
+      diceTwo = diceOne
+    }
+    else {
+      diceOne = getRoll([diceOne])
+      diceTwo = getRoll([diceTwo, diceOne])
+    }
   }
 </script>
 
 <Login />
 <TicketTicker />
 <div class="content">
+  <h2>Roll doubles and get <span class="cost"><span class="times">4x</span> the cost!</span></h2>
   <!-- MAJOR SHOUTOUT TO https://codepen.io/lenasta92579651/pen/yLeVmdW -->
   <div class="dice-container">
-    <div class="dice-flex">
-      <select bind:value={selector1}>
-        {#each [...Array(6).keys()] as num}
-          {num}
-          <option value={num+1}>{num+1}</option>
-        {/each}
-      </select>
-      <div
-        class="dice dice-one"
-        class:show-1={diceOne == 1}
-        class:show-2={diceOne == 2}
-        class:show-3={diceOne == 3}
-        class:show-4={diceOne == 4}
-        class:show-5={diceOne == 5}
-        class:show-6={diceOne == 6}
-      >
-        <div id="dice-one-side-one" class="side one">
-          <div class="dot one-1" />
-        </div>
-        <div id="dice-one-side-two" class="side two">
-          <div class="dot two-1" />
-          <div class="dot two-2" />
-        </div>
-        <div id="dice-one-side-three" class="side three">
-          <div class="dot three-1" />
-          <div class="dot three-2" />
-          <div class="dot three-3" />
-        </div>
-        <div id="dice-one-side-four" class="side four">
-          <div class="dot four-1" />
-          <div class="dot four-2" />
-          <div class="dot four-3" />
-          <div class="dot four-4" />
-        </div>
-        <div id="dice-one-side-five" class="side five">
-          <div class="dot five-1" />
-          <div class="dot five-2" />
-          <div class="dot five-3" />
-          <div class="dot five-4" />
-          <div class="dot five-5" />
-        </div>
-        <div id="dice-one-side-six" class="side six">
-          <div class="dot six-1" />
-          <div class="dot six-2" />
-          <div class="dot six-3" />
-          <div class="dot six-4" />
-          <div class="dot six-5" />
-          <div class="dot six-6" />
-        </div>
+    <div class="dice dice-one show-{diceOne}" on:click={() => diceOne=getRoll([diceOne])}>
+      <div id="dice-one-side-one" class="side one">
+        <div class="dot one-1" />
+      </div>
+      <div id="dice-one-side-two" class="side two">
+        <div class="dot two-1" />
+        <div class="dot two-2" />
+      </div>
+      <div id="dice-one-side-three" class="side three">
+        <div class="dot three-1" />
+        <div class="dot three-2" />
+        <div class="dot three-3" />
+      </div>
+      <div id="dice-one-side-four" class="side four">
+        <div class="dot four-1" />
+        <div class="dot four-2" />
+        <div class="dot four-3" />
+        <div class="dot four-4" />
+      </div>
+      <div id="dice-one-side-five" class="side five">
+        <div class="dot five-1" />
+        <div class="dot five-2" />
+        <div class="dot five-3" />
+        <div class="dot five-4" />
+        <div class="dot five-5" />
+      </div>
+      <div id="dice-one-side-six" class="side six">
+        <div class="dot six-1" />
+        <div class="dot six-2" />
+        <div class="dot six-3" />
+        <div class="dot six-4" />
+        <div class="dot six-5" />
+        <div class="dot six-6" />
       </div>
     </div>
-    <div class="dice-flex">
-      <select bind:value={selector2}>
-        {#each [...Array(6).keys()] as num}
-          {num}
-          <option value={num+1}>{num+1}</option>
-        {/each}
-      </select>
-      <div
-        class="dice dice-two"
-        class:show-1={diceTwo == 1}
-        class:show-2={diceTwo == 2}
-        class:show-3={diceTwo == 3}
-        class:show-4={diceTwo == 4}
-        class:show-5={diceTwo == 5}
-        class:show-6={diceTwo == 6}
-      >
-        <div id="dice-two-side-one" class="side one">
-          <div class="dot one-1" />
-        </div>
-        <div id="dice-two-side-two" class="side two">
-          <div class="dot two-1" />
-          <div class="dot two-2" />
-        </div>
-        <div id="dice-two-side-three" class="side three">
-          <div class="dot three-1" />
-          <div class="dot three-2" />
-          <div class="dot three-3" />
-        </div>
-        <div id="dice-two-side-four" class="side four">
-          <div class="dot four-1" />
-          <div class="dot four-2" />
-          <div class="dot four-3" />
-          <div class="dot four-4" />
-        </div>
-        <div id="dice-two-side-five" class="side five">
-          <div class="dot five-1" />
-          <div class="dot five-2" />
-          <div class="dot five-3" />
-          <div class="dot five-4" />
-          <div class="dot five-5" />
-        </div>
-        <div id="dice-two-side-six" class="side six">
-          <div class="dot six-1" />
-          <div class="dot six-2" />
-          <div class="dot six-3" />
-          <div class="dot six-4" />
-          <div class="dot six-5" />
-          <div class="dot six-6" />
-        </div>
+    <div class="dice dice-two show-{diceTwo}" on:click={() => diceTwo=getRoll([diceTwo])}>
+      <div id="dice-two-side-one" class="side one">
+        <div class="dot one-1" />
+      </div>
+      <div id="dice-two-side-two" class="side two">
+        <div class="dot two-1" />
+        <div class="dot two-2" />
+      </div>
+      <div id="dice-two-side-three" class="side three">
+        <div class="dot three-1" />
+        <div class="dot three-2" />
+        <div class="dot three-3" />
+      </div>
+      <div id="dice-two-side-four" class="side four">
+        <div class="dot four-1" />
+        <div class="dot four-2" />
+        <div class="dot four-3" />
+        <div class="dot four-4" />
+      </div>
+      <div id="dice-two-side-five" class="side five">
+        <div class="dot five-1" />
+        <div class="dot five-2" />
+        <div class="dot five-3" />
+        <div class="dot five-4" />
+        <div class="dot five-5" />
+      </div>
+      <div id="dice-two-side-six" class="side six">
+        <div class="dot six-1" />
+        <div class="dot six-2" />
+        <div class="dot six-3" />
+        <div class="dot six-4" />
+        <div class="dot six-5" />
+        <div class="dot six-6" />
       </div>
     </div>
 
   </div>
-  <Play game="dice" click={rollDice}>Roll!</Play>
+  <Play game="dice" click={rollDice} time={1000}>Roll!</Play>
 </div>
 
 <style>
+  h2 {
+    margin: 0;
+  }
+  .cost {
+    color: rgb(47, 255, 0);
+    animation: rainbow 5s linear infinite;
+  }
+  .times {
+    font-weight: bolder;
+  }
+
+  @keyframes rainbow
+  {
+    0%,100%
+    {
+      filter: hue-rotate(0deg);
+    }
+    50%
+    {
+      filter: hue-rotate(360deg);
+    }
+  }
   .dice-container {
     display: flex;
   }
@@ -137,15 +139,13 @@
   .dice-container .dice {
     margin: 40px;
   }
-  button:hover {
-    cursor: pointer;
-  }
 
   .dice {
     width: 100px;
     height: 100px;
     transform-style: preserve-3d;
     transition: transform 1s;
+    cursor: pointer;
   }
 
   .dot {
@@ -155,7 +155,7 @@
     margin: -10px 5px 5px -10px;
     border-radius: 20px;
     background-color: #f25f5c;
-    box-shadow: inset 2px 2px #d90429;
+    /* box-shadow: inset 2px 2px #d90429; */
   }
 
   .side {
