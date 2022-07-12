@@ -69,9 +69,11 @@
 <TicketTicker />
 <div class="content">
   <div class="doors">
-    {#each Array(5) as _, index}
+    {#each Array(3) as _, index}
       <div class="door">
-        <div class="boxes" bind:this={boxes[index]}></div>
+        <div class="boxes" bind:this={boxes[index]}>
+          <div class="default">❓</div>
+        </div>
       </div>
     {/each}
   </div>
@@ -80,6 +82,14 @@
 </div>
 
 <style>
+  .default {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12rem;
+    width: 100%;
+    height: 100%;
+  }
   @media (max-width: 1199.5px) {
     .content {
       height: fit-content;
