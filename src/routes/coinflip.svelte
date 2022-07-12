@@ -38,7 +38,7 @@
   }
 
   const precheck = () => {
-    // if (spinning) return
+    if (spinning) return
     return spinning = true
   }
 </script>

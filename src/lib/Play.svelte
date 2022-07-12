@@ -10,10 +10,9 @@
   export let onfail = ()=>{}
   export let time = 0
   const gameInfo = GAMES[game]
-  console.log(gameInfo)
 
   const play = async() => {
-    if (!precheck()) return onfail()
+    if (!precheck()) return
     if ($tickets < gameInfo.cost) {
       toast.push('Not enough tickets!', { classes: ['error'] })
       return onfail()

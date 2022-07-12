@@ -5,8 +5,8 @@
   import { tickets } from '../stores'
   import { toast } from '@zerodevx/svelte-toast'
 
-  let diceOne, diceTwo;
-  let selector1, selector2
+  let diceOne, diceTwo
+  let rolling = false
 
   const getRoll = not => {
     let temp = Math.floor(Math.random() * 6) + 1
@@ -25,6 +25,13 @@
       diceOne = getRoll([diceOne])
       diceTwo = getRoll([diceTwo, diceOne])
     }
+    setTimeout(() => {
+      rolling = false
+    }, 1000)
+  }
+  const precheck = () => {
+    if (rolling) return
+    return rolling = true
   }
 </script>
 
@@ -106,7 +113,7 @@
     </div>
 
   </div>
-  <Play game="dice" click={rollDice} time={1000}>Roll!</Play>
+  <Play game="dice" click={rollDice} precheck={precheck} onfail={()=>rolling=false} time={1000}>Roll!</Play>
 </div>
 
 <style>
