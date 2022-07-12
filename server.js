@@ -156,6 +156,54 @@ app.post('/api/play', async (req, res) => {
   })
 })
 
+app.post('/api/cashout', async (req, res) => {
+  const { uuid, chainId } = req.body
+  console.log(uuid, chainId)
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(uuid)) {
+    return res.status(400).send('Invalid UUID')
+  }
+  if (!(chainId in CHAINS)) {
+    return res.status(400).send('Invalid chainId')
+  }
+  const account = await findAccount(uuid)
+  if (account === null) {
+    return res.status(404).send('Account not found')
+  }
+  const tickets = account.tickets
+  if (tickets < 15) {
+    return res.status(404).send('Not enough tickets')
+  }
+
+  await removeTickets(uuid, 15)
+  try {
+    const web3 = web3Instances[chainId]
+    const eth = web3.eth
+    const nonce = await eth.getTransactionCount(SERVER_WALLET)
+
+    const contract = new eth.Contract(ABI, COINS[chainId].busd)
+    const transfer = contract.methods.transfer(
+      account.address,
+      web3.utils.toWei('15', CHAINS[chainId].wei)
+    )
+    const transaction = await eth.accounts.signTransaction({
+      from: SERVER_WALLET,
+      to: COINS[chainId].busd,
+      data: transfer.encodeABI(),
+      value: 0,
+      gas: await transfer.estimateGas({ from: SERVER_WALLET }),
+      gasPrice: web3.utils.toWei('5', 'gwei'),
+      nonce
+    }, process.env.BETSHARK_PRIVATE_KEY)
+    const txnHash = await eth.sendSignedTransaction(transaction.rawTransaction)
+
+    return res.json({ txn: txnHash.transactionHash })
+  } catch (_) {
+    await addTickets(uuid, 15)
+    return res.status(500).send('Internal server error')
+  }
+
+})
+
 app.get('*', (request, response) => {
   response.sendFile(resolve(__dirname, 'dist', 'index.html'))
 });

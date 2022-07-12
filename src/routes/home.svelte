@@ -1,6 +1,7 @@
 <script>
   import { onMount, onDestroy } from 'svelte'
   import { link, Router } from 'svelte-routing'
+  import betshark from '../assets/betshark-logo.png'
 
   const randomPage = () => {
     const pages = ['dice', 'coinflip', 'slots']
@@ -104,10 +105,19 @@
     </a>
   </h2>
   </Router>
-
+  <img class="betshark" src={betshark} alt="">
 </div>
 
 <style>
+  .betshark {
+    position: absolute;
+    height: auto;
+    width: min(1000px, 100vw);
+    margin: 0 auto;
+    z-index: -1;
+    opacity: 0.5;
+    filter: blur(10px);
+  }
   .content {
     animation: flyin 1.7s ease;
   }

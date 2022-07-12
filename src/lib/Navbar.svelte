@@ -9,6 +9,7 @@
     'dice',
     'coinflip',
     'tickets',
+    'cashout'
   ]
   let selected = Array(routes.length).fill(false)
 
@@ -68,7 +69,7 @@
     justify-content: flex-end;
     align-items: center;
   }
-  @media (max-width: 768px) {
+  @media (max-width: 904px) {
     .nav-menu {
       flex-direction: column;
     }
