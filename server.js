@@ -125,6 +125,7 @@ app.post('/api/login', async (req, res) => {
 
 // let tickets = 100  // temporary tickets variable for testing odds
 app.post('/api/play', async (req, res) => {
+  console.log('asdfsdf')
   const { uuid, game } = req.body
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(uuid)) {
     return res.status(400).send('Invalid UUID')
@@ -137,7 +138,8 @@ app.post('/api/play', async (req, res) => {
     return res.status(404).send('Account not found')
   }
   const gameInfo = GAMES[game]
-  if (account.tickets < gameInfo.tickets) {
+  console.log(gameInfo)
+  if (account.tickets < gameInfo.cost) {
     return res.status(404).send('Not enough tickets')
   }
 
